@@ -49,6 +49,7 @@ export class AppComponent implements AfterViewInit {
 	@ViewChild("block2") enBlock2!: ElementRef;
 	@ViewChild("logo") enLogo!: ElementRef;
 	@ViewChild("firstquote") enFirstQuote!: ElementRef;
+	@ViewChild("toolbar") enToolbar!: ElementRef;
 
 	@HostListener("window:scroll", ["$event"])
 	onScroll(event: Event) {
@@ -57,6 +58,7 @@ export class AppComponent implements AfterViewInit {
 		let subTitleElem = this.enSubTitle.nativeElement;
 		let logoElem = this.enLogo.nativeElement;
 		let block2Elem = this.enBlock2.nativeElement;
+		let toolbarElem = this.enToolbar.nativeElement;
 
 		/**
 		 * title & subtitle fade in/out
@@ -78,7 +80,6 @@ export class AppComponent implements AfterViewInit {
 			this.logo.bottom =
 				logoElem.offsetTop + logoElem.offsetHeight + TOOLBAR_HEIGHT;
 		}
-		console.log(this.logo.bottom);
 
 		/**
 		 * move logo conditionally
@@ -87,7 +88,7 @@ export class AppComponent implements AfterViewInit {
 		if (subTitleTop <= this.logo.bottom) {
 			if (
 				subTitleElem.offsetTop -
-					LOGO_MARGIN -
+					TOOLBAR_HEIGHT -
 					logoElem.offsetHeight -
 					this.yOffset >
 				TOOLBAR_HEIGHT
@@ -96,8 +97,19 @@ export class AppComponent implements AfterViewInit {
 				logoElem.style.marginTop = `${
 					LOGO_MARGIN - (this.logo.bottom - subTitleTop)
 				}px`;
-			} else if (this.logo.fadeOutY == Number.MAX_SAFE_INTEGER) {
-				this.logo.fadeOutY = this.yOffset + FADE_DURATION;
+				if (toolbarElem.style.backgroundColor === "black") {
+					toolbarElem.style.backgroundColor = "transparent";
+				}
+			} else {
+				if (this.logo.fadeOutY == Number.MAX_SAFE_INTEGER) {
+					this.logo.fadeOutY = this.yOffset + FADE_DURATION;
+				}
+				if (
+					toolbarElem.style.backgroundColor === "transparent" ||
+					toolbarElem.style.backgroundColor === ""
+				) {
+					toolbarElem.style.backgroundColor = "black";
+				}
 			}
 		} else {
 			logoElem.style.marginTop = `${LOGO_MARGIN}px`;
