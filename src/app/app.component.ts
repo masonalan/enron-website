@@ -7,8 +7,8 @@ import {
 } from "@angular/core";
 
 const TITLE_ANIM_THRESHOLD = 100;
-const LOGO_MARGIN = 70;
-const FADE_DURATION = 170; /* in px */
+const LOGO_MARGIN = 0;
+const FADE_DURATION = 200; /* in px */
 const TOOLBAR_HEIGHT = 125;
 
 @Component({
@@ -46,6 +46,7 @@ export class AppComponent implements AfterViewInit {
 
 	@ViewChild("title") enTitle!: ElementRef;
 	@ViewChild("subtitle") enSubTitle!: ElementRef;
+	@ViewChild("block2") enBlock2!: ElementRef;
 	@ViewChild("logo") enLogo!: ElementRef;
 	@ViewChild("firstquote") enFirstQuote!: ElementRef;
 
@@ -55,7 +56,7 @@ export class AppComponent implements AfterViewInit {
 
 		let subTitleElem = this.enSubTitle.nativeElement;
 		let logoElem = this.enLogo.nativeElement;
-		let quote1Elem = this.enFirstQuote.nativeElement;
+		let block2Elem = this.enBlock2.nativeElement;
 
 		/**
 		 * title & subtitle fade in/out
@@ -63,35 +64,37 @@ export class AppComponent implements AfterViewInit {
 		this.enTitle.nativeElement.style.opacity = this.fadeOutAt(100, 100);
 
 		this.subTitle.fadeInY = !this.subTitle.fadeInY
-			? (window.innerHeight + 30 - subTitleElem.offsetTop) * -1
+			? (window.innerHeight - subTitleElem.offsetTop - 60) * -1
 			: this.subTitle.fadeInY;
 		subTitleElem.style.opacity = this.fadeInAt(this.subTitle.fadeInY);
-
-		if (subTitleElem.style.opacity >= 1) {
-			subTitleElem.style.opacity = this.fadeOutAt(
-				this.subTitle.fadeInY + 600
-			);
-		}
+		block2Elem.style.opacity = this.fadeInAt(
+			this.subTitle.fadeInY + subTitleElem.offsetHeight - 57.5 * 2 // 57.5 is line height
+		);
 
 		/**
 		 * subtitle & logo collision
 		 */
 		if (!this.logo.bottom) {
-			this.logo.bottom = logoElem.offsetTop + logoElem.offsetHeight;
+			this.logo.bottom =
+				logoElem.offsetTop + logoElem.offsetHeight + TOOLBAR_HEIGHT;
 		}
+		console.log(this.logo.bottom);
 
+		/**
+		 * move logo conditionally
+		 */
 		const subTitleTop = subTitleElem.offsetTop - LOGO_MARGIN - this.yOffset;
 		if (subTitleTop <= this.logo.bottom) {
 			if (
-				subTitleElem.offsetTop +
-					subTitleElem.offsetHeight +
-					30 -
+				subTitleElem.offsetTop -
+					LOGO_MARGIN -
+					logoElem.offsetHeight -
 					this.yOffset >
-				window.innerHeight
+				TOOLBAR_HEIGHT
 			) {
 				const logoCurrMarTop = parseInt(logoElem.style.marginTop);
 				logoElem.style.marginTop = `${
-					70 - (this.logo.bottom - subTitleTop)
+					LOGO_MARGIN - (this.logo.bottom - subTitleTop)
 				}px`;
 			} else if (this.logo.fadeOutY == Number.MAX_SAFE_INTEGER) {
 				this.logo.fadeOutY = this.yOffset + FADE_DURATION;
@@ -101,52 +104,9 @@ export class AppComponent implements AfterViewInit {
 		}
 
 		/**
-		 * freeze subtitle
-		 */
-		// if (
-		// 	subTitleElem.offsetTop +
-		// 		subTitleElem.offsetHeight +
-		// 		30 -
-		// 		this.yOffset <=
-		// 		window.innerHeight &&
-		// 	subTitleElem.style.position !== "fixed"
-		// ) {
-		// 	this.enSubTitle.nativeElement.style.position = "fixed";
-		// 	this.subTitle.fixedY = this.yOffset;
-		// } else if (this.yOffset < this.subTitle.fixedY) {
-		// 	this.enSubTitle.nativeElement.style.position = "relative";
-		// }
-
-		/**
 		 * fade out logo
 		 */
 		logoElem.style.opacity = this.fadeOutAt(this.logo.fadeOutY);
-
-		/**
-		 * fade in quote 1
-		 */
-		this.quote1.fadeInY = !this.quote1.fadeInY
-			? quote1Elem.offsetTop - TOOLBAR_HEIGHT - 200
-			: this.quote1.fadeInY;
-		quote1Elem.style.opacity = this.fadeInAt(this.quote1.fadeInY);
-
-		/**
-		 * freeze quote 1
-		 */
-		if (this.yOffset > this.quote1.fadeInY + 200) {
-			quote1Elem.style.top = `${
-				1200 + (this.yOffset - (this.quote1.fadeInY + 200))
-			}px`;
-		}
-
-		/**
-		 * fade out quote 1
-		 */
-		if (quote1Elem.style.opacity >= 1) {
-			quote1Elem.style.opacity = this.fadeOutAt(
-				this.quote1.fadeInY + 400
-			);
-		}
 	}
 
 	ngAfterViewInit() {

@@ -6,7 +6,15 @@
         -moz-osx-font-smoothing: grayscale;
     }
 
-    .toolbar {
+    iframe {
+        border: none;
+        padding: none;
+        margin: 30px;
+        width: 284px;
+        height: 350px;
+    }
+
+    .en-toolbar {
         position: fixed;
         width: 100%;
         height: 125px;
@@ -16,7 +24,7 @@
         z-index: 1;
     }
 
-    .toolbar > a {
+    .en-toolbar > a {
         vertical-align: middle;
         margin-left: 30px;
         margin-right: 30px;
@@ -26,13 +34,13 @@
         z-index: 3;
     }
 
-    .en-title-container {
+    .en-container {
         display: flex;
         justify-content: center;
         width: 100%;
     }
 
-    .en-title {
+    h1 {
         font-size: 150px;
         line-height: 115px;
         margin-top: 30px;
@@ -40,10 +48,9 @@
         margin-right: 30px;
     }
 
-    .en-logo-container {
-        width: 100%;
-        display: flex;
-        justify-content: center;
+    h2 {
+        font-size: 75px;
+        line-height: 57.5px;
     }
 
     .en-logo {
@@ -52,8 +59,6 @@
     }
 
     .en-text-container {
-        font-size: 75px;
-        line-height: 57.5px;
         width: 100%;
         display: flex;
         justify-content: center;
@@ -64,11 +69,31 @@
         bottom: 30px;
     }
 
-    .en-quote-1 {
-        top: 1200px;
-        position: absolute;
-        opacity: 0;
-        left: 60px;
+    .en-tweets-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 100px;
+    }
+
+    .en-divider {
+        width: 100%;
+        height: 50px;
+        background-image: url("assets/divider_pattern.png");
+        background-repeat: repeat-x;
+        background-position: -10px;
+        background-size: 300px 50px;
+        margin-top: 100px;
+    }
+
+    .en-main-container {
+        background-color: white;
+        width: 100%;
+        color: black;
+    }
+
+    .en-color-logo {
+        margin-top: 100px;
+        width: 750px;
     }
 
     @media screen and (max-width: 1196px) {
@@ -109,7 +134,8 @@
 </style>
 
 <div>
-    <div class="toolbar">
+    <!-- Toolbar -->
+    <div class="en-toolbar">
         <a href="#">
             <img src="assets/enron_logo.png" height="70px" />
         </a>
@@ -117,25 +143,79 @@
             <img src="assets/list.svg" height="70px" />
         </a>
     </div>
-    <div class="en-title-container">
-        <span #title class="en-title">We're back... <br />Can we talk?</span>
+
+    <!-- Introduction -->
+    <div class="en-container">
+        <h1 #title>We're back... <br />Can we talk?</h1>
     </div>
-    <div class="en-logo-container">
-        <img #logo src="assets/enron_logo_white_grey.png" class="en-logo" />
+
+    <!-- Logo -->
+    <div class="en-container">
+        <img #logo src="assets/enron_logo_gradient.png" class="en-logo" />
     </div>
+
+    <!-- Text Block -->
     <div class="en-text-container">
-        <span #subtitle class="en-subtitle">
+        <h2 #subtitle class="en-subtitle">
             Enron is committed to showing you why<br />we deserve a second
-            chance.
-        </span>
+            chance. <br /><br /><br />
+            <span #block2>But we know it’s not going to be easy…</span>
+        </h2>
     </div>
-    <div class="en-text-container">
-        <span #firstquote class="en-quote-1">
-            "We will have trust issues<br />
-            for the rest of our lives..
-        </span>
+    <div class="en-tweets-container">
+        <table>
+            <tr>
+                <td>
+                    <iframe
+                        srcdoc='<blockquote class="twitter-tweet"><p lang="en" dir="ltr">And more recently, Enron and the energy traders took corruption and evilness to a whole new level.</p>&mdash; nooK ttocS (@NookTtocs) <a href="https://twitter.com/NookTtocs/status/547501432?ref_src=twsrc%5Etfw">December 30, 2007</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
+                    >
+                    </iframe>
+                </td>
+                <td>
+                    <iframe
+                        srcdoc='<blockquote class="twitter-tweet"><p lang="en" dir="ltr">one thing good about moving is "the purge" why was i keeping bills from 2004 in my file cabinet? shredded so much tonight. feeling enron</p>&mdash; Sean Percival (@Percival) <a href="https://twitter.com/Percival/status/367504092?ref_src=twsrc%5Etfw">October 27, 2007</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
+                    >
+                    </iframe>
+                </td>
+                <td>
+                    <iframe
+                        srcdoc='<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Just gob smacked after watching the Enron documentary - we always did wonder how they made money - and of course they didn&#39;t</p>&mdash; Andy Boyd (@AndyBoydnl) <a href="https://twitter.com/AndyBoydnl/status/427197372?ref_src=twsrc%5Etfw">November 19, 2007</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
+                    >
+                    </iframe>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <iframe
+                        srcdoc='<blockquote class="twitter-tweet"><p lang="en" dir="ltr">I&#39;ve shredded my weight in paper today, maybe I should&#39;ve worked at Enron</p>&mdash; Nick Ramirez (@brownsabbath) <a href="https://twitter.com/brownsabbath/status/430269402?ref_src=twsrc%5Etfw">November 20, 2007</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
+                    >
+                    </iframe>
+                </td>
+                <td>
+                    <iframe
+                        srcdoc='<blockquote class="twitter-tweet"><p lang="en" dir="ltr">3 Bankers Plead Guilty in Case Tied to Enron http://tinyurl.com/2cm2la</p>&mdash; NYT Business (@nytimesbusiness) <a href="https://twitter.com/nytimesbusiness/status/453313652?ref_src=twsrc%5Etfw">November 29, 2007</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
+                    >
+                    </iframe>
+                </td>
+                <td>
+                    <iframe
+                        srcdoc='<blockquote class="twitter-tweet"><p lang="en" dir="ltr"><a href="https://twitter.com/mrsb?ref_src=twsrc%5Etfw">@mrsb</a> we call shredding in our house the Enron Game. Kids love it.</p>&mdash; Matt Edwards (@realredboy) <a href="https://twitter.com/realredboy/status/8698541?ref_src=twsrc%5Etfw">March 16, 2007</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
+                    >
+                    </iframe>
+                </td>
+            </tr>
+        </table>
     </div>
-    <div style="height: 50000px"></div>
+    <div class="en-divider"></div>
+    <div class="en-main-container">
+        <div class="en-logo-container">
+            <img src="assets/enron_logo.png" class="en-color-logo" />
+        </div>
+        <div style="margin-top: 100px" class="en-title-container">
+            <span class="en-title">We hear you.</span>
+        </div>
+        <div style="height: 1000px"></div>
+    </div>
 </div>
 
 <router-outlet></router-outlet>
