@@ -95,24 +95,15 @@ export class AppComponent implements AfterViewInit {
 					TOOLBAR_HEIGHT -
 					logoElem.offsetHeight -
 					this.yOffset >
-				TOOLBAR_HEIGHT
+				30
 			) {
 				const logoCurrMarTop = parseInt(logoElem.style.marginTop);
 				logoElem.style.marginTop = `${
 					LOGO_MARGIN - (this.logo.bottom - subTitleTop)
 				}px`;
-				if (toolbarElem.style.backgroundColor === "black") {
-					toolbarElem.style.backgroundColor = "transparent";
-				}
 			} else {
 				if (this.logo.fadeOutY == Number.MAX_SAFE_INTEGER) {
 					this.logo.fadeOutY = this.yOffset + FADE_DURATION;
-				}
-				if (
-					toolbarElem.style.backgroundColor === "transparent" ||
-					toolbarElem.style.backgroundColor === ""
-				) {
-					toolbarElem.style.backgroundColor = "black";
 				}
 			}
 		} else {
@@ -125,9 +116,26 @@ export class AppComponent implements AfterViewInit {
 		logoElem.style.opacity = this.fadeOutAt(this.logo.fadeOutY);
 		linksElem.style.opacity = this.fadeInAt(this.logo.fadeOutY);
 		lineElem.style.opacity = this.fadeInAt(this.logo.fadeOutY);
+
+		if (this.yOffset >= this.logo.fadeOutY) {
+			if (
+				toolbarElem.style.backgroundColor === "transparent" ||
+				toolbarElem.style.backgroundColor === ""
+			) {
+				toolbarElem.style.backgroundColor = "black";
+			}
+		} else {
+			if (toolbarElem.style.backgroundColor === "black") {
+				toolbarElem.style.backgroundColor = "transparent";
+			}
+		}
 	}
 
 	ngAfterViewInit() {
+		let titleElem = this.enTitle.nativeElement;
+		let h = window.innerHeight - parseInt(titleElem.offsetHeight) - 100;
+		h = h > 750 ? 750 : h;
+		this.enLogo.nativeElement.style.height = `${h}px`;
 		this.enLogo.nativeElement.style.marginTop = `${LOGO_MARGIN}px`;
 		this.enSubTitle.nativeElement.style.marginTop = `${
 			window.innerHeight - 200
