@@ -51,6 +51,7 @@ export class AppComponent implements AfterViewInit {
 	@ViewChild("firstquote") enFirstQuote!: ElementRef;
 	@ViewChild("toolbar") enToolbar!: ElementRef;
 	@ViewChild("links") enLinks!: ElementRef;
+	@ViewChild("line") enLine!: ElementRef;
 
 	@HostListener("window:scroll", ["$event"])
 	onScroll(event: Event) {
@@ -61,6 +62,7 @@ export class AppComponent implements AfterViewInit {
 		let block2Elem = this.enBlock2.nativeElement;
 		let toolbarElem = this.enToolbar.nativeElement;
 		let linksElem = this.enLinks.nativeElement;
+		let lineElem = this.enLine.nativeElement;
 
 		/**
 		 * title & subtitle fade in/out
@@ -122,6 +124,7 @@ export class AppComponent implements AfterViewInit {
 		 */
 		logoElem.style.opacity = this.fadeOutAt(this.logo.fadeOutY);
 		linksElem.style.opacity = this.fadeInAt(this.logo.fadeOutY);
+		lineElem.style.opacity = this.fadeInAt(this.logo.fadeOutY);
 	}
 
 	ngAfterViewInit() {
