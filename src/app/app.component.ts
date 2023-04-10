@@ -37,11 +37,23 @@ export class AppComponent implements AfterViewInit {
 	};
 
 	fadeInAt(threshold: number, duration = FADE_DURATION) {
-		return (this.yOffset - threshold) / duration;
+		const v = (this.yOffset - threshold) / duration;
+		if (v < 0) {
+			return 0;
+		} else if (v > 1) {
+			return 1;
+		}
+		return v;
 	}
 
 	fadeOutAt(threshold: number, duration = FADE_DURATION) {
-		return (threshold - this.yOffset) / duration;
+		const v = (threshold - this.yOffset) / duration;
+		if (v < 0) {
+			return 0;
+		} else if (v > 1) {
+			return 1;
+		}
+		return v;
 	}
 
 	@ViewChild("title") enTitle!: ElementRef;
@@ -52,6 +64,11 @@ export class AppComponent implements AfterViewInit {
 	@ViewChild("toolbar") enToolbar!: ElementRef;
 	@ViewChild("links") enLinks!: ElementRef;
 	@ViewChild("line") enLine!: ElementRef;
+	@ViewChild("tweet1") enTweet1!: ElementRef;
+	@ViewChild("tweet2") enTweet2!: ElementRef;
+	@ViewChild("tweet3") enTweet3!: ElementRef;
+	@ViewChild("tweet4") enTweet4!: ElementRef;
+	@ViewChild("tweet5") enTweet5!: ElementRef;
 
 	@HostListener("window:scroll", ["$event"])
 	onScroll(event: Event) {
@@ -63,6 +80,13 @@ export class AppComponent implements AfterViewInit {
 		let toolbarElem = this.enToolbar.nativeElement;
 		let linksElem = this.enLinks.nativeElement;
 		let lineElem = this.enLine.nativeElement;
+		let tweetElems = [
+			this.enTweet1.nativeElement,
+			this.enTweet2.nativeElement,
+			this.enTweet3.nativeElement,
+			this.enTweet4.nativeElement,
+			this.enTweet5.nativeElement,
+		];
 
 		/**
 		 * title & subtitle fade in/out
@@ -129,6 +153,22 @@ export class AppComponent implements AfterViewInit {
 				toolbarElem.style.backgroundColor = "transparent";
 			}
 		}
+
+		/**
+		 * tweet animations
+		 */
+		tweetElems.forEach(async (tweet, i) => {
+			const t = tweet.offsetTop - window.innerHeight / 2;
+			const f = 2;
+			tweet.style.transform = `scale(${
+				Math.abs(this.fadeOutAt(t) * f) + 1
+			}) rotate(${
+				i % 2 == 0
+					? 20 + this.fadeOutAt(t) * 20
+					: -20 - this.fadeOutAt(t) * 20
+			}deg)`;
+			tweet.style.opacity = this.fadeInAt(t - FADE_DURATION / 1.5);
+		});
 	}
 
 	ngAfterViewInit() {
@@ -140,5 +180,6 @@ export class AppComponent implements AfterViewInit {
 		this.enSubTitle.nativeElement.style.marginTop = `${
 			window.innerHeight - 200
 		}px`;
+		(<any>window).twttr.widgets.load();
 	}
 }

@@ -14,6 +14,11 @@
         height: 350px;
     }
 
+    td {
+        width: 200px;
+        height: 400px;
+    }
+
     .en-toolbar {
         position: fixed;
         width: 100%;
@@ -113,7 +118,19 @@
     .en-tweets-container {
         display: flex;
         justify-content: center;
-        margin-top: 100px;
+        flex-direction: column;
+        margin-top: 50px;
+        padding-bottom: 100px;
+    }
+
+    .en-tweets-container > div {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .en-tweets-container > div > div {
+        filter: grayscale(100%);
+        width: 300px;
     }
 
     .en-divider {
@@ -202,6 +219,28 @@
             margin-top: 560px;
         }
     }
+
+    #tweet1 {
+        transform: rotate(-20deg);
+        margin-top: 100px;
+    }
+
+    #tweet2 {
+        transform: rotate(20deg);
+    }
+
+    #tweet3 {
+        transform: rotate(-20deg);
+    }
+
+    #tweet4 {
+        transform: rotate(20deg);
+    }
+
+    #tweet5 {
+        transform: rotate(-20deg);
+        margin-top: 100px;
+    }
 </style>
 
 <div>
@@ -253,52 +292,105 @@
 
         <!-- Tweets -->
         <div class="en-tweets-container">
-            <table>
-                <tr>
-                    <td>
-                        <iframe
-                            srcdoc='<blockquote class="twitter-tweet"><p lang="en" dir="ltr">And more recently, Enron and the energy traders took corruption and evilness to a whole new level.</p>&mdash; nooK ttocS (@NookTtocs) <a href="https://twitter.com/NookTtocs/status/547501432?ref_src=twsrc%5Etfw">December 30, 2007</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
+            <div>
+                <div #tweet1 id="tweet1">
+                    <blockquote class="twitter-tweet" data-theme="dark">
+                        <p lang="en" dir="ltr">
+                            And more recently, Enron and the energy traders took
+                            corruption and evilness to a whole new level.
+                        </p>
+                        &mdash; nooK ttocS (@NookTtocs)
+                        <a
+                            href="https://twitter.com/NookTtocs/status/547501432?ref_src=twsrc%5Etfw"
+                            >December 30, 2007</a
                         >
-                        </iframe>
-                    </td>
-                    <td>
-                        <iframe
-                            srcdoc='<blockquote class="twitter-tweet"><p lang="en" dir="ltr">one thing good about moving is "the purge" why was i keeping bills from 2004 in my file cabinet? shredded so much tonight. feeling enron</p>&mdash; Sean Percival (@Percival) <a href="https://twitter.com/Percival/status/367504092?ref_src=twsrc%5Etfw">October 27, 2007</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
+                    </blockquote>
+                    <script
+                        async
+                        src="https://platform.twitter.com/widgets.js"
+                        charset="utf-8"
+                    ></script>
+                </div>
+                <div #tweet2 id="tweet2">
+                    <blockquote class="twitter-tweet" data-theme="dark">
+                        <p lang="en" dir="ltr">
+                            one thing good about moving is "the purge" why was i
+                            keeping bills from 2004 in my file cabinet? shredded
+                            so much tonight. feeling enron
+                        </p>
+                        &mdash; Sean Percival (@Percival)
+                        <a
+                            href="https://twitter.com/Percival/status/367504092?ref_src=twsrc%5Etfw"
+                            >October 27, 2007</a
                         >
-                        </iframe>
-                    </td>
-                    <td>
-                        <iframe
-                            srcdoc='<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Just gob smacked after watching the Enron documentary - we always did wonder how they made money - and of course they didn&#39;t</p>&mdash; Andy Boyd (@AndyBoydnl) <a href="https://twitter.com/AndyBoydnl/status/427197372?ref_src=twsrc%5Etfw">November 19, 2007</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
+                    </blockquote>
+                    <script
+                        async
+                        src="https://platform.twitter.com/widgets.js"
+                        charset="utf-8"
+                    ></script>
+                </div>
+            </div>
+            <div>
+                <div #tweet3 id="tweet3">
+                    <blockquote class="twitter-tweet" data-theme="dark">
+                        <p lang="en" dir="ltr">
+                            Just gob smacked after watching the Enron
+                            documentary - we always did wonder how they made
+                            money - and of course they didn&#39;t
+                        </p>
+                        &mdash; Andy Boyd (@AndyBoydnl)
+                        <a
+                            href="https://twitter.com/AndyBoydnl/status/427197372?ref_src=twsrc%5Etfw"
+                            >November 19, 2007</a
                         >
-                        </iframe>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <iframe
-                            srcdoc='<blockquote class="twitter-tweet"><p lang="en" dir="ltr">I&#39;ve shredded my weight in paper today, maybe I should&#39;ve worked at Enron</p>&mdash; Nick Ramirez (@brownsabbath) <a href="https://twitter.com/brownsabbath/status/430269402?ref_src=twsrc%5Etfw">November 20, 2007</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
+                    </blockquote>
+                    <script
+                        async
+                        src="https://platform.twitter.com/widgets.js"
+                        charset="utf-8"
+                    ></script>
+                </div>
+            </div>
+            <div>
+                <div #tweet4 id="tweet4">
+                    <blockquote class="twitter-tweet" data-theme="dark">
+                        <p lang="en" dir="ltr">
+                            I&#39;ve shredded my weight in paper today, maybe I
+                            should&#39;ve worked at Enron
+                        </p>
+                        &mdash; Nick Ramirez (@brownsabbath)
+                        <a
+                            href="https://twitter.com/brownsabbath/status/430269402?ref_src=twsrc%5Etfw"
+                            >November 20, 2007</a
                         >
-                        </iframe>
-                    </td>
-                    <td>
-                        <iframe
-                            srcdoc='<blockquote class="twitter-tweet"><p lang="en" dir="ltr">3 Bankers Plead Guilty in Case Tied to Enron http://tinyurl.com/2cm2la</p>&mdash; NYT Business (@nytimesbusiness) <a href="https://twitter.com/nytimesbusiness/status/453313652?ref_src=twsrc%5Etfw">November 29, 2007</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
+                    </blockquote>
+                    <script
+                        async
+                        src="https://platform.twitter.com/widgets.js"
+                        charset="utf-8"
+                    ></script>
+                </div>
+                <div #tweet5 id="tweet5">
+                    <blockquote class="twitter-tweet" data-theme="dark">
+                        <p lang="en" dir="ltr">
+                            3 Bankers Plead Guilty in Case Tied to Enron
+                            http://tinyurl.com/2cm2la
+                        </p>
+                        &mdash; NYT Business (@nytimesbusiness)
+                        <a
+                            href="https://twitter.com/nytimesbusiness/status/453313652?ref_src=twsrc%5Etfw"
+                            >November 29, 2007</a
                         >
-                        </iframe>
-                    </td>
-                    <td>
-                        <iframe
-                            srcdoc='<blockquote class="twitter-tweet"><p lang="en" dir="ltr"><a href="https://twitter.com/mrsb?ref_src=twsrc%5Etfw">@mrsb</a> we call shredding in our house the Enron Game. Kids love it.</p>&mdash; Matt Edwards (@realredboy) <a href="https://twitter.com/realredboy/status/8698541?ref_src=twsrc%5Etfw">March 16, 2007</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
-                        >
-                        </iframe>
-                    </td>
-                </tr>
-            </table>
+                    </blockquote>
+                    <script
+                        async
+                        src="https://platform.twitter.com/widgets.js"
+                        charset="utf-8"
+                    ></script>
+                </div>
+            </div>
         </div>
-        <div class="en-divider en-bg-red"></div>
-        <div class="en-divider en-bg-green"></div>
-        <div class="en-divider en-bg-blue"></div>
     </div>
 
     <!-- Light section -->
