@@ -11,6 +11,8 @@ const LOGO_MARGIN = 0;
 const FADE_DURATION = 200; /* in px */
 const TOOLBAR_HEIGHT = 125;
 
+const TWEET_ROTATIONS = [20, -20, 4, -20, 20];
+
 @Component({
 	selector: "app-root",
 	templateUrl: "./app.component.html",
@@ -155,17 +157,22 @@ export class AppComponent implements AfterViewInit {
 		}
 
 		/**
+		 * fade out subtitle 1
+		 */
+		subTitleElem.style.opacity = this.fadeOutAt(
+			subTitleElem.offsetTop - TOOLBAR_HEIGHT - FADE_DURATION
+		);
+
+		/**
 		 * tweet animations
 		 */
 		tweetElems.forEach(async (tweet, i) => {
 			const t = tweet.offsetTop - window.innerHeight / 2;
 			const f = 2;
-			tweet.style.transform = `scale(${
-				Math.abs(this.fadeOutAt(t) * f) + 1
-			}) rotate(${
-				i % 2 == 0
-					? 20 + this.fadeOutAt(t) * 20
-					: -20 - this.fadeOutAt(t) * 20
+			const d = TWEET_ROTATIONS[i];
+			const s = Math.abs(this.fadeOutAt(t) * f) + 1;
+			tweet.style.transform = `scale(${s > 2 ? 2 : s}) rotate(${
+				d + this.fadeOutAt(t) * 20
 			}deg)`;
 			tweet.style.opacity = this.fadeInAt(t - FADE_DURATION / 1.5);
 		});
