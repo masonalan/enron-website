@@ -38,7 +38,7 @@
         text-decoration: none;
     }
 
-    .en-toolbar > a:first-of-type {
+    .en-toolbar-edge > a {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -47,7 +47,16 @@
     .en-toolbar-edge {
         width: 20%;
         display: flex;
-        justify-content: center;
+    }
+
+    .en-toolbar-edge:first-of-type {
+        justify-content: left;
+        padding-left: 30px;
+    }
+
+    .en-toolbar-edge:last-of-type {
+        justify-content: right;
+        padding-right: 30px;
     }
 
     .en-toolbar-center {
@@ -102,6 +111,7 @@
 
     .en-logo {
         position: fixed;
+        width: 70%;
     }
 
     .en-text-container {
@@ -110,9 +120,9 @@
         justify-content: center;
     }
 
-    .en-subtitle {
-        margin-top: 900px;
-        bottom: 30px;
+    .en-text-container > h2 {
+        padding-left: 30px;
+        padding-right: 30px;
     }
 
     .en-tweet-title {
@@ -126,6 +136,7 @@
         flex-direction: column;
         margin-top: 50px;
         padding-bottom: 100px;
+        overflow: visible;
     }
 
     .en-tweets-container > div {
@@ -187,41 +198,73 @@
         background-color: black;
         z-index: 1;
         position: relative;
+        overflow: hidden;
     }
 
-    @media screen and (max-width: 1196px) {
+    #login-button {
+        display: flex;
+    }
+
+    #mobile-menu {
+        display: none;
+    }
+
+    .en-toolbar-center > a {
+        display: flex;
+    }
+
+    @media screen and (max-width: 1809px) {
+        .en-title {
+            font-size: 100px;
+            line-height: 75px;
+        }
+
+        h2 {
+            font-size: 33px;
+            line-height: 24.75px;
+        }
+    }
+
+    @media screen and (min-width: 1740px) {
+        .en-logo {
+            width: 1217.3px;
+        }
+    }
+
+    @media screen and (max-width: 1315px) {
+        .en-title {
+            font-size: 55px;
+            line-height: 41.25px;
+        }
+
+        h2 {
+            font-size: 18.5px;
+            line-height: 13.875px;
+        }
+
+        #login-button {
+            display: none;
+        }
+
+        #mobile-menu {
+            display: flex;
+        }
+
+        .en-toolbar-center > a {
+            display: none;
+        }
+    }
+
+    @media screen and (max-width: 815px) {
         .en-title {
             margin-top: 125px;
         }
-
-        .toolbar {
-            background-color: black;
-        }
     }
 
-    @media screen and (max-width: 840px) {
-        .en-logo {
-            width: 680px;
-        }
-    }
-
-    @media screen and (max-width: 715px) {
+    @media screen and (max-width: 655px) {
         .en-title {
-            font-size: 70px;
-            line-height: 53.6px;
-        }
-
-        .en-logo {
-            width: 420px;
-        }
-
-        .en-text-container {
-            font-size: 35px;
-            line-height: 29px;
-        }
-
-        .en-subtitle-container {
-            margin-top: 560px;
+            font-size: 45px;
+            line-height: 33.75px;
         }
     }
 
@@ -246,6 +289,10 @@
         transform: rotate(-20deg);
         margin-top: 100px;
     }
+
+    #easy {
+        opacity: 0;
+    }
 </style>
 
 <div>
@@ -266,9 +313,12 @@
             <a href="#">Executive Summary</a>
         </div>
         <div class="en-toolbar-edge">
-            <div class="en-vertical-center">
+            <div id="login-button" class="en-vertical-center">
                 <a href="#" class="en-button"><i>my</i><b>Enron</b></a>
             </div>
+            <a id="mobile-menu" href="#"
+                ><img src="assets/list.svg" height="70px"
+            /></a>
         </div>
     </div>
     <div #line class="en-line"></div>
@@ -276,7 +326,7 @@
     <div class="en-curtain">
         <!-- Introduction -->
         <div class="en-container">
-            <h1 #title>WE'RE BACK... <br />CAN WE TALK?</h1>
+            <h1 #title class="en-title">WE'RE BACK... <br />CAN WE TALK?</h1>
         </div>
 
         <!-- Logo -->
@@ -287,16 +337,21 @@
         <!-- Text Block -->
         <div class="en-text-container">
             <h2 #subtitle class="en-subtitle">
-                <span style="opacity: 0.6"
+                <span
                     >Enron is committed to showing you why<br />we deserve a
                     second chance.
                 </span>
             </h2>
         </div>
 
+        <div style="height: 100px"></div>
+
+        <!-- Text block 2 -->
         <div class="en-text-container">
-            <h2 #subtitle class="en-subtitle">
-                <span #block2>We know it’s not going to be easy…</span>
+            <h2>
+                <span id="easy" #block2
+                    >We know it’s not going to be easy…</span
+                >
             </h2>
         </div>
 
