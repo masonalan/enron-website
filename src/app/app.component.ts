@@ -202,64 +202,35 @@ export class AppComponent implements AfterViewInit {
 		];
 
 		/**
-		 * title fade in/out
+		 * fade out title & fade in message 1
 		 */
 		this.fadeOut(this.enTitle, 100, 100);
 		this.fadeIn(this.enSubTitle, 0);
-		//subTitleElem.style.opacity = this.fadeInAt(0);
 
 		/**
-		 * move logo conditionally
+		 * freeze logo at top of screen and fade it out
 		 */
-		if (
-			subTitleElem.offsetTop - LOGO_MARGIN - this.yCurr <=
-			this.logoInfo.bottom
-		) {
-			const vd = subTitleElem.offsetTop - this.logoInfo.bottom;
-			if (this.logoInfo.top + vd > this.yCurr + LOGO_MARGIN + PADDING) {
-				/**
-				 * move logo until logo is at top of screen
-				 */
-				logoElem.style.marginTop = `${vd - LOGO_MARGIN - this.yCurr}px`;
-			} else {
-				/**
-				 * update when to fade out the logo
-				 */
-				logoElem.style.marginTop = `${-this.logoInfo.top + PADDING}px`;
-				if (this.logoInfo.fadeOutY == Number.MAX_SAFE_INTEGER) {
-					this.logoInfo.fadeOutY = this.yCurr + FADE_DURATION;
-				}
-			}
-		} else {
-			logoElem.style.marginTop = `0px`;
-		}
+		const logoFreezeThreshold = logoElem.offsetTop - PADDING;
+		this.freeze(this.logo, logoFreezeThreshold);
+		this.fadeOut(this.logo, logoFreezeThreshold + FADE_DURATION);
 
 		/**
-		 * fade out logo & fade in toolbar
+		 * fade in toolbar (combine to 1 component)
 		 */
-		this.fadeOut(this.logo, this.logoInfo.fadeOutY);
-		this.fadeIn(this.enLinks, this.logoInfo.fadeOutY);
-		this.fadeIn(this.enLine, this.logoInfo.fadeOutY);
+		this.fadeIn(this.enLinks, logoFreezeThreshold + FADE_DURATION);
+		this.fadeIn(this.enLine, logoFreezeThreshold + FADE_DURATION);
 
-		if (this.yCurr >= this.logoInfo.top + PADDING + FADE_DURATION) {
-			if (
-				toolbarElem.style.backgroundColor === "transparent" ||
-				toolbarElem.style.backgroundColor === ""
-			) {
-				toolbarElem.style.backgroundColor = "black";
-			}
-		} else {
-			if (toolbarElem.style.backgroundColor === "black") {
-				toolbarElem.style.backgroundColor = "transparent";
-			}
-		}
-
+		/**
+		 * freeze message 1 halfway up window & fade out
+		 */
 		const ft = subTitleElem.offsetTop - window.innerHeight / 2;
 		this.freeze(this.enSubTitle, ft);
-
 		this.fadeOut(this.enSubTitle, ft + FADE_DURATION);
+
+		/**
+		 * fade in message 2
+		 */
 		this.fadeIn(this.enBlock2, ft + FADE_DURATION);
-		//}
 
 		/**
 		 * tweet animations
@@ -274,39 +245,31 @@ export class AppComponent implements AfterViewInit {
 			}deg)`;
 			tweet.style.opacity = this.posLinearSeq(t - FADE_DURATION / 1.5);
 		});
-	}
-
-	initAnimInfo() {
-		/**
-		 * calculate bottom of logo
-		 */
-		this.logoInfo.bottom =
-			this.logo.nativeElement.offsetTop +
-			this.logo.nativeElement.offsetHeight;
-		this.logoInfo.top = this.logo.nativeElement.offsetTop;
 
 		/**
-		 * update subtitle margin top based on logo height
+		 * clean this up
 		 */
-		this.enSubTitle.nativeElement.style.marginTop = `${
-			this.logoInfo.bottom +
-			LOGO_MARGIN -
-			this.enTitle.nativeElement.offsetHeight -
-			this.enTitle.nativeElement.offsetTop -
-			100
-		}px`;
+		if (this.yCurr >= this.logoInfo.top + PADDING + FADE_DURATION) {
+			if (
+				toolbarElem.style.backgroundColor === "transparent" ||
+				toolbarElem.style.backgroundColor === ""
+			) {
+				toolbarElem.style.backgroundColor = "black";
+			}
+		} else {
+			if (toolbarElem.style.backgroundColor === "black") {
+				toolbarElem.style.backgroundColor = "transparent";
+			}
+		}
 	}
 
 	ngAfterViewInit() {
 		window.onpageshow = () => {
-			this.initAnimInfo();
 			(<any>window).twttr.widgets.load();
 		};
 
 		window.onresize = () => {
-			this.initAnimInfo();
+			// handle resize
 		};
-
-		this.initAnimInfo();
 	}
 }
