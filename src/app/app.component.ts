@@ -298,14 +298,15 @@ export class AppComponent implements AfterViewInit {
 	}
 
 	ngAfterViewInit() {
-		(<any>window).twttr.widgets.load();
-
 		window.onpageshow = () => {
 			this.initAnimInfo();
+			(<any>window).twttr.widgets.load();
 		};
 
 		window.onresize = () => {
 			this.initAnimInfo();
 		};
+
+		this.initAnimInfo();
 	}
 }
