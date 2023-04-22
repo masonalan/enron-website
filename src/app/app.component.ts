@@ -4,6 +4,9 @@ import {
 	ViewChild,
 	HostListener,
 	Component,
+	OnInit,
+	ViewChildren,
+	QueryList,
 } from "@angular/core";
 
 const TITLE_ANIM_THRESHOLD = 100;
@@ -23,6 +26,80 @@ export class AppComponent implements AfterViewInit {
 
 	yCurr = 0;
 	yPrev = 0;
+
+	/**
+	 * put into json file
+	 */
+	tweetRows = new Array<Array<any>>();
+	tweets = [
+		{
+			url: "https://twitter.com/NookTtocs/status/547501432?ref_src=twsrc%5Etfw",
+			author: "nooK ttocS (@NookTtocs)",
+			date: "December 30, 2007",
+			content: `And more recently, Enron and the energy traders took
+			corruption and evilness to a whole new level.`,
+		},
+		{
+			url: "https://twitter.com/Percival/status/367504092?ref_src=twsrc%5Etfw",
+			author: "Sean Percival (@Percival)",
+			date: "October 27, 2007",
+			content: `one thing good about moving is "the purge" why was i
+			keeping bills from 2004 in my file cabinet? shredded
+			so much tonight. feeling enron`,
+		},
+		{
+			url: "https://twitter.com/AndyBoydnl/status/427197372?ref_src=twsrc%5Etfw",
+			author: "Andy Boyd (@AndyBoydnl)",
+			date: "November 19, 2007",
+			content: `Just gob smacked after watching the Enron
+			documentary - we always did wonder how they made
+			money - and of course they didn&#39;t`,
+		},
+		{
+			url: "https://twitter.com/brownsabbath/status/430269402?ref_src=twsrc%5Etfw",
+			author: "Nick Ramirez (@brownsabbath)",
+			date: "November 20, 2007",
+			content: `I&#39;ve shredded my weight in paper today, maybe I
+			should&#39;ve worked at Enron`,
+		},
+		{
+			url: "https://twitter.com/nytimesbusiness/status/453313652?ref_src=twsrc%5Etfw",
+			author: "NYT Business (@nytimesbusiness)",
+			date: "November 29, 2007",
+			content: `3 Bankers Plead Guilty in Case Tied to Enron
+			http://tinyurl.com/2cm2la`,
+		},
+		{
+			url: "https://twitter.com/NookTtocs/status/547501432?ref_src=twsrc%5Etfw",
+			author: "nooK ttocS (@NookTtocs)",
+			date: "December 30, 2007",
+			content: `And more recently, Enron and the energy traders took
+			corruption and evilness to a whole new level.`,
+		},
+		{
+			url: "https://twitter.com/Percival/status/367504092?ref_src=twsrc%5Etfw",
+			author: "Sean Percival (@Percival)",
+			date: "October 27, 2007",
+			content: `one thing good about moving is "the purge" why was i
+			keeping bills from 2004 in my file cabinet? shredded
+			so much tonight. feeling enron`,
+		},
+		{
+			url: "https://twitter.com/AndyBoydnl/status/427197372?ref_src=twsrc%5Etfw",
+			author: "Andy Boyd (@AndyBoydnl)",
+			date: "November 19, 2007",
+			content: `Just gob smacked after watching the Enron
+			documentary - we always did wonder how they made
+			money - and of course they didn&#39;t`,
+		},
+		{
+			url: "https://twitter.com/brownsabbath/status/430269402?ref_src=twsrc%5Etfw",
+			author: "Nick Ramirez (@brownsabbath)",
+			date: "November 20, 2007",
+			content: `I&#39;ve shredded my weight in paper today, maybe I
+			should&#39;ve worked at Enron`,
+		},
+	];
 
 	posLinearFn(threshold: number, duration = FADE_DURATION) {
 		const v = (this.yCurr - threshold) / duration;
@@ -103,6 +180,18 @@ export class AppComponent implements AfterViewInit {
 		this._fadeOut.set(elem, isActive);
 	}
 
+	tweetIndex(i: number) {
+		++i;
+		let currRow = 0;
+		let rowStart = 0;
+		for (let r = 0; r < i; ) {
+			rowStart = r;
+			++currRow;
+			r = r + 2 + currRow - 1;
+		}
+		return { row: --currRow, col: i - rowStart - 1, rowSize: currRow + 2 };
+	}
+
 	@ViewChild("title") enTitle!: ElementRef;
 	@ViewChild("subtitle") enSubTitle!: ElementRef;
 	@ViewChild("tweetHeader") enBlock2!: ElementRef;
@@ -111,12 +200,9 @@ export class AppComponent implements AfterViewInit {
 	@ViewChild("toolbar") enToolbar!: ElementRef;
 	@ViewChild("links") enLinks!: ElementRef;
 	@ViewChild("line") enLine!: ElementRef;
-	@ViewChild("tweet1") enTweet1!: ElementRef;
-	@ViewChild("tweet2") enTweet2!: ElementRef;
-	@ViewChild("tweet3") enTweet3!: ElementRef;
-	@ViewChild("tweet4") enTweet4!: ElementRef;
-	@ViewChild("tweet5") enTweet5!: ElementRef;
 	@ViewChild("titleContainer") titleContainer!: ElementRef;
+	@ViewChildren("tweet") tweetElements!: QueryList<ElementRef>;
+	@ViewChild("tweetsContainer") tweetsContainer!: ElementRef;
 
 	/*
 	 * whether or not there is a scheduled animation frame
@@ -139,14 +225,6 @@ export class AppComponent implements AfterViewInit {
 		 */
 		this.yPrev = this.yCurr;
 		this.yCurr = window.pageYOffset;
-
-		let tweetElems = [
-			this.enTweet1.nativeElement,
-			this.enTweet2.nativeElement,
-			this.enTweet3.nativeElement,
-			this.enTweet4.nativeElement,
-			this.enTweet5.nativeElement,
-		];
 
 		/**
 		 * fade out title & fade in subtitle
@@ -201,18 +279,70 @@ export class AppComponent implements AfterViewInit {
 		/**
 		 * tweet animations
 		 */
-		tweetElems.forEach(async (tweet, i) => {
-			const t = tweet.offsetTop - window.innerHeight;
-			const f = 2;
-			const d = TWEET_ROTATIONS[i];
-			const s = Math.abs(this.negLinearFn(t, FADE_DURATION * 2.5)) + 1;
-			tweet.style.transform = `scale(${s > 5 ? 5 : s}) rotate(${
-				d + this.negLinearFn(t, FADE_DURATION * 2.5) * 40
-			}deg)`;
-			tweet.style.opacity = this.posLinearFn(t, FADE_DURATION * 1.5);
+		this.tweetElements.forEach(async (tweet, i) => {
+			const ti = this.tweetIndex(i);
+
+			/**
+			 * dest rotation in degrees
+			 *
+			 * -20 = left
+			 * 3 = center
+			 * 20 = right
+			 */
+			const destRot =
+				(ti.col + 1) * 2 - 1 == ti.rowSize
+					? 3
+					: ti.col + 1 > ti.rowSize / 2
+					? 30
+					: -70;
+
+			/**
+			 * calculate current rotation
+			 */
+			const thresh = tweet.nativeElement.offsetTop - window.innerHeight;
+			const dur = FADE_DURATION * 2.5;
+			const currRot =
+				destRot +
+				(destRot < 0
+					? this.posLinearFn(thresh, dur)
+					: this.negLinearFn(thresh, dur)) *
+					40;
+
+			/**
+			 * calculate current scale
+			 */
+			let scale =
+				Math.abs(this.negLinearFn(thresh, dur) * 2) + 1 + ti.row / 2.0;
+			scale = scale > 5 ? 5 : scale;
+
+			/**
+			 * apply styles
+			 */
+			tweet.nativeElement.style.transform = `scale(${scale}) rotate(${currRot}deg)`;
+			tweet.nativeElement.style.opacity = this.posLinearFn(thresh);
 		});
 
 		this._saf = false;
+	}
+
+	// MAKE CUSTOM TWEET BOXES
+	structureTweets() {
+		/**
+		 * Create tweet structure
+		 */
+		this.tweets.forEach((tweet, i) => {
+			const ti = this.tweetIndex(i);
+			if (ti.rowSize * 400 > window.innerWidth) {
+				return;
+			}
+			if (ti.row == this.tweetRows.length) {
+				this.tweetRows.push(new Array());
+			}
+			this.tweetRows[ti.row].push(tweet);
+		});
+
+		// 	const cutoff = (this.tweetIndex(this.tweets.length - 1).row + 1) * 400;
+		// 	this.tweetsContainer.nativeElement.style.background = `linear-gradient(180deg, black ${cutoff}px, rgba(0, 0, 0, 0) ${0}px)`;
 	}
 
 	ngAfterViewInit() {
@@ -222,7 +352,10 @@ export class AppComponent implements AfterViewInit {
 		};
 
 		window.onresize = () => {
+			this.structureTweets();
 			this.refresh();
 		};
+
+		this.structureTweets();
 	}
 }

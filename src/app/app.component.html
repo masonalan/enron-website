@@ -87,106 +87,26 @@
             </h2>
         </div>
 
+        <div class="tweets-spacer"></div>
+
         <!-- Tweets -->
-        <div class="tweets-container">
-            <div>
-                <div #tweet1 id="tweet1">
+        <div class="tweets-container" #tweetsContainer>
+            <div *ngFor="let row of tweetRows; index as i">
+                <div *ngFor="let tweet of row; index as i" #tweet>
                     <blockquote class="twitter-tweet" data-theme="dark">
                         <p lang="en" dir="ltr">
-                            And more recently, Enron and the energy traders took
-                            corruption and evilness to a whole new level.
+                            {{ tweet.content }}
                         </p>
-                        &mdash; nooK ttocS (@NookTtocs)
-                        <a
-                            href="https://twitter.com/NookTtocs/status/547501432?ref_src=twsrc%5Etfw"
-                            >December 30, 2007</a
-                        >
+                        &mdash; {{ tweet.author }}
+                        <a href="{{ tweet.url }}">{{ tweet.date }}</a>
                     </blockquote>
-                    <script
-                        async
-                        src="https://platform.twitter.com/widgets.js"
-                        charset="utf-8"
-                    ></script>
-                </div>
-                <div #tweet2 id="tweet2">
-                    <blockquote class="twitter-tweet" data-theme="dark">
-                        <p lang="en" dir="ltr">
-                            one thing good about moving is "the purge" why was i
-                            keeping bills from 2004 in my file cabinet? shredded
-                            so much tonight. feeling enron
-                        </p>
-                        &mdash; Sean Percival (@Percival)
-                        <a
-                            href="https://twitter.com/Percival/status/367504092?ref_src=twsrc%5Etfw"
-                            >October 27, 2007</a
-                        >
-                    </blockquote>
-                    <script
-                        async
-                        src="https://platform.twitter.com/widgets.js"
-                        charset="utf-8"
-                    ></script>
                 </div>
             </div>
-            <div>
-                <div #tweet3 id="tweet3">
-                    <blockquote class="twitter-tweet" data-theme="dark">
-                        <p lang="en" dir="ltr">
-                            Just gob smacked after watching the Enron
-                            documentary - we always did wonder how they made
-                            money - and of course they didn&#39;t
-                        </p>
-                        &mdash; Andy Boyd (@AndyBoydnl)
-                        <a
-                            href="https://twitter.com/AndyBoydnl/status/427197372?ref_src=twsrc%5Etfw"
-                            >November 19, 2007</a
-                        >
-                    </blockquote>
-                    <script
-                        async
-                        src="https://platform.twitter.com/widgets.js"
-                        charset="utf-8"
-                    ></script>
-                </div>
-            </div>
-            <div>
-                <div #tweet4 id="tweet4">
-                    <blockquote class="twitter-tweet" data-theme="dark">
-                        <p lang="en" dir="ltr">
-                            I&#39;ve shredded my weight in paper today, maybe I
-                            should&#39;ve worked at Enron
-                        </p>
-                        &mdash; Nick Ramirez (@brownsabbath)
-                        <a
-                            href="https://twitter.com/brownsabbath/status/430269402?ref_src=twsrc%5Etfw"
-                            >November 20, 2007</a
-                        >
-                    </blockquote>
-                    <script
-                        async
-                        src="https://platform.twitter.com/widgets.js"
-                        charset="utf-8"
-                    ></script>
-                </div>
-                <div #tweet5 id="tweet5">
-                    <blockquote class="twitter-tweet" data-theme="dark">
-                        <p lang="en" dir="ltr">
-                            3 Bankers Plead Guilty in Case Tied to Enron
-                            http://tinyurl.com/2cm2la
-                        </p>
-                        &mdash; NYT Business (@nytimesbusiness)
-                        <a
-                            href="https://twitter.com/nytimesbusiness/status/453313652?ref_src=twsrc%5Etfw"
-                            >November 29, 2007</a
-                        >
-                    </blockquote>
-                    <script
-                        async
-                        src="https://platform.twitter.com/widgets.js"
-                        charset="utf-8"
-                    ></script>
-                </div>
-            </div>
+            <script
+                async
+                src="https://platform.twitter.com/widgets.js"
+                charset="utf-8"
+            ></script>
         </div>
     </div>
 
@@ -201,6 +121,6 @@
     </div>
 
     <div style="height: 1000px"></div>
-</div>
 
-<router-outlet></router-outlet>
+    <router-outlet></router-outlet>
+</div>

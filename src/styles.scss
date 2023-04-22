@@ -6,6 +6,8 @@
 body {
 	margin: 0;
 	background-color: black;
+	max-width: 100%;
+	overflow-x: hidden;
 }
 
 /**
@@ -181,11 +183,22 @@ h2 {
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
-	margin-top: $fade-duration + 400px;
-	padding-bottom: 100px;
-	padding-top: 200px;
-	overflow: hidden;
+	height: 650px;
+	overflow: visible;
 }
+
+.tweets-spacer {
+	margin-top: $fade-duration + 1000px;
+	width: 100%;
+}
+
+// .tweets-footer {
+// 	width: 100%;
+// 	height: 100px;
+// 	position: relative;
+// 	bottom: 0px;
+// 	left: 0px;
+// }
 
 .tweet-header {
 	opacity: 0;
@@ -247,10 +260,9 @@ h2 {
 }
 
 .curtain {
-	background-color: black;
+	background: black;
 	z-index: 1;
 	position: relative;
-	//overflow: hidden;
 }
 
 #login-button {
