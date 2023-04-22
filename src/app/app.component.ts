@@ -7,7 +7,7 @@ import {
 } from "@angular/core";
 
 const TITLE_ANIM_THRESHOLD = 100;
-const FADE_DURATION = 200; /* in px */
+const FADE_DURATION = 300; /* in px */
 const TOOLBAR_HEIGHT = 125;
 const LOGO_MARGIN = 70;
 const PADDING = 30;
@@ -38,20 +38,11 @@ export class AppComponent implements AfterViewInit {
 		return 1 - this.posLinearFn(threshold, duration);
 	}
 
-	set(elem: ElementRef, fn: any) {
-		const clone = this._frozen.get(elem);
-		if (clone && clone.visible) {
-			fn(clone);
-		} else {
-			fn(elem.nativeElement);
-		}
-	}
-
 	setAt(elem: ElementRef, t: number, beforeFn: any, afterFn: any) {
 		if (this.yCurr >= t && this.yPrev < t) {
-			this.set(elem, afterFn);
+			afterFn(elem.nativeElement);
 		} else if (this.yCurr < t && this.yPrev >= t) {
-			this.set(elem, beforeFn);
+			beforeFn(elem.nativeElement);
 		}
 	}
 
@@ -62,27 +53,30 @@ export class AppComponent implements AfterViewInit {
 		d: number,
 		fadeFn: any
 	) {
-		// set fn
 		const set = () => {
-			this.set(elem, (e: any) => {
-				e.style.opacity = fadeFn(t, d);
-			});
+			elem.nativeElement.style.opacity = fadeFn(t, d);
 		};
 
 		if (this.yCurr >= t && this.yCurr <= t + d) {
-			// yCurr is within anim range
+			/**
+			 *yCurr is within anim range
+			 */
 			set();
 			return true;
 		} else if (this.yCurr < t) {
-			// yCurr is above anim range
-			// set to final value and stop animation
+			/**
+			 * yCurr is above anim range
+			 * set to final value and stop animation
+			 */
 			if (isActive || this.yPrev > t + d) {
 				set();
 				return false;
 			}
 		} else if (this.yCurr > t + d && isActive) {
-			// yCurr is below anim range
-			// set to final value and stop animation
+			/**
+			 * yCurr is below anim range
+			 * set to final value and stop animation
+			 */
 			if (isActive || this.yPrev < t) {
 				set();
 				return false;
@@ -109,39 +103,9 @@ export class AppComponent implements AfterViewInit {
 		this._fadeOut.set(elem, isActive);
 	}
 
-	_frozen = new Map();
-	freeze(elem: ElementRef, y: number) {
-		let clone = this._frozen.get(elem);
-
-		// lazy init clone
-		if (!clone) {
-			clone = elem.nativeElement.cloneNode(true);
-			clone.style.position = "fixed";
-			clone.style.top = `${elem.nativeElement.offsetTop - y}px`;
-			clone.style.marginTop = `0px`;
-			clone.style.display = "none";
-			elem.nativeElement.after(clone);
-			clone["visible"] = false;
-			this._frozen.set(elem, clone);
-		}
-
-		// show or hide fixed clone
-		if (this.yCurr >= y && !clone.visible) {
-			clone.style.display = "flex";
-			clone.visible = true;
-			elem.nativeElement.style.opacity = 0;
-		} else if (this.yCurr < y && clone.visible) {
-			clone.style.display = "none";
-			clone.visible = false;
-			elem.nativeElement.style.opacity = 1;
-		}
-
-		console.log(clone.visible);
-	}
-
 	@ViewChild("title") enTitle!: ElementRef;
 	@ViewChild("subtitle") enSubTitle!: ElementRef;
-	@ViewChild("block2") enBlock2!: ElementRef;
+	@ViewChild("tweetHeader") enBlock2!: ElementRef;
 	@ViewChild("logo") logo!: ElementRef;
 	@ViewChild("firstquote") enFirstQuote!: ElementRef;
 	@ViewChild("toolbar") enToolbar!: ElementRef;
@@ -152,9 +116,24 @@ export class AppComponent implements AfterViewInit {
 	@ViewChild("tweet3") enTweet3!: ElementRef;
 	@ViewChild("tweet4") enTweet4!: ElementRef;
 	@ViewChild("tweet5") enTweet5!: ElementRef;
+	@ViewChild("titleContainer") titleContainer!: ElementRef;
+
+	/*
+	 * whether or not there is a scheduled animation frame
+	 */
+	_saf = false;
 
 	@HostListener("window:scroll", ["$event"])
 	onScroll(event: Event) {
+		if (this._saf) return;
+
+		this._saf = true;
+		requestAnimationFrame(() => {
+			this.refresh();
+		});
+	}
+
+	refresh() {
 		/**
 		 * update scroll state
 		 */
@@ -170,16 +149,18 @@ export class AppComponent implements AfterViewInit {
 		];
 
 		/**
-		 * fade out title & fade in message 1
+		 * fade out title & fade in subtitle
 		 */
 		this.fadeOut(this.enTitle, 0, 100);
 		this.fadeIn(this.enSubTitle, 0);
 
 		/**
-		 * freeze logo at top of screen and fade it out
+		 * fade out logo
 		 */
-		const logoFt = this.logo.nativeElement.offsetTop - PADDING;
-		this.freeze(this.logo, logoFt);
+		const logoFt =
+			this.titleContainer.nativeElement.offsetTop +
+			this.titleContainer.nativeElement.offsetHeight -
+			PADDING;
 		this.fadeOut(this.logo, logoFt);
 
 		/**
@@ -197,21 +178,23 @@ export class AppComponent implements AfterViewInit {
 		);
 
 		/**
-		 * fade in toolbar (combine to 1 component)
+		 * fade in toolbar
 		 */
 		this.fadeIn(this.enLinks, logoFt + FADE_DURATION);
 		this.fadeIn(this.enLine, logoFt + FADE_DURATION);
 
 		/**
-		 * freeze message 1 halfway up window & fade out
+		 * fade out subtitle
 		 */
 		const subTitleFt =
-			this.enSubTitle.nativeElement.offsetTop - window.innerHeight / 2;
-		this.freeze(this.enSubTitle, subTitleFt);
+			logoFt +
+			this.logo.nativeElement.offsetHeight -
+			window.innerHeight / 2 +
+			FADE_DURATION;
 		this.fadeOut(this.enSubTitle, subTitleFt);
 
 		/**
-		 * fade in message 2
+		 * fade in tweet header
 		 */
 		this.fadeIn(this.enBlock2, subTitleFt + FADE_DURATION);
 
@@ -219,24 +202,27 @@ export class AppComponent implements AfterViewInit {
 		 * tweet animations
 		 */
 		tweetElems.forEach(async (tweet, i) => {
-			const t = tweet.offsetTop - window.innerHeight / 2;
+			const t = tweet.offsetTop - window.innerHeight;
 			const f = 2;
 			const d = TWEET_ROTATIONS[i];
-			const s = Math.abs(this.negLinearFn(t) * f) + 1;
-			tweet.style.transform = `scale(${s > 2 ? 2 : s}) rotate(${
-				d + this.negLinearFn(t) * 20
+			const s = Math.abs(this.negLinearFn(t, FADE_DURATION * 2.5)) + 1;
+			tweet.style.transform = `scale(${s > 5 ? 5 : s}) rotate(${
+				d + this.negLinearFn(t, FADE_DURATION * 2.5) * 40
 			}deg)`;
-			tweet.style.opacity = this.posLinearFn(t - FADE_DURATION / 1.5);
+			tweet.style.opacity = this.posLinearFn(t, FADE_DURATION * 1.5);
 		});
+
+		this._saf = false;
 	}
 
 	ngAfterViewInit() {
 		window.onpageshow = () => {
 			(<any>window).twttr.widgets.load();
+			this.refresh();
 		};
 
 		window.onresize = () => {
-			// handle resize
+			this.refresh();
 		};
 	}
 }
