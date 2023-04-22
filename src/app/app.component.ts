@@ -24,23 +24,7 @@ export class AppComponent implements AfterViewInit {
 	yCurr = 0;
 	yPrev = 0;
 
-	logoInfo = {
-		top: 0,
-		bottom: 0,
-		fadeOutY: Number.MAX_SAFE_INTEGER,
-	};
-
-	subTitle = {
-		fixedY: Number.MAX_SAFE_INTEGER,
-		fadeInY: 0,
-	};
-
-	quote1 = {
-		fadeInY: 0,
-		fixedY: 0,
-	};
-
-	posLinearSeq(threshold: number, duration = FADE_DURATION) {
+	posLinearFn(threshold: number, duration = FADE_DURATION) {
 		const v = (this.yCurr - threshold) / duration;
 		if (v < 0) {
 			return 0;
@@ -50,14 +34,8 @@ export class AppComponent implements AfterViewInit {
 		return v;
 	}
 
-	negLinearSeq(threshold: number, duration = FADE_DURATION) {
-		const v = (threshold - this.yCurr) / duration;
-		if (v < 0) {
-			return 0;
-		} else if (v > 1) {
-			return 1;
-		}
-		return v;
+	negLinearFn(threshold: number, duration = FADE_DURATION) {
+		return 1 - this.posLinearFn(threshold, duration);
 	}
 
 	set(elem: ElementRef, fn: any) {
@@ -69,103 +47,96 @@ export class AppComponent implements AfterViewInit {
 		}
 	}
 
-	_fadeIn = new Map();
-	fadeIn(elem: ElementRef, t: number, duration = FADE_DURATION) {
-		const isActive = this._fadeIn.get(elem);
-
-		if (this.yCurr >= t && this.yCurr <= t + duration) {
-			/**
-			 * yCurr is within anim range
-			 */
-			if (!isActive) {
-				this._fadeIn.set(elem, true);
-			}
-			this.set(elem, (e: any) => {
-				e.style.opacity = this.posLinearSeq(t, duration);
-			});
-		} else if (this.yCurr < t) {
-			/**
-			 * yCurr is above anim range
-			 */
-			if (isActive || this.yPrev > t + duration) {
-				this.set(elem, (e: any) => {
-					e.style.opacity = 0;
-				});
-				this._fadeIn.set(elem, false);
-			}
-		} else if (this.yCurr > t + duration && isActive) {
-			/**
-			 * yCurr is below anim range
-			 */
-			if (isActive || this.yPrev < t) {
-				this.set(elem, (e: any) => {
-					e.style.opacity = 1;
-				});
-				this._fadeIn.set(elem, false);
-			}
+	setAt(elem: ElementRef, t: number, beforeFn: any, afterFn: any) {
+		if (this.yCurr >= t && this.yPrev < t) {
+			this.set(elem, afterFn);
+		} else if (this.yCurr < t && this.yPrev >= t) {
+			this.set(elem, beforeFn);
 		}
 	}
 
-	_fadeOut = new Map();
-	fadeOut(elem: ElementRef, t: number, duration = FADE_DURATION) {
-		const isActive = this._fadeOut.get(elem);
-
-		if (this.yCurr >= t - duration && this.yCurr <= t) {
-			/**
-			 * yCurr is within anim range
-			 */
-			if (!isActive) {
-				this._fadeOut.set(elem, true);
-			}
+	fade(
+		elem: ElementRef,
+		isActive: boolean,
+		t: number,
+		d: number,
+		fadeFn: any
+	) {
+		// set fn
+		const set = () => {
 			this.set(elem, (e: any) => {
-				e.style.opacity = this.negLinearSeq(t, duration);
+				e.style.opacity = fadeFn(t, d);
 			});
-		} else if (this.yCurr < t - duration) {
-			/**
-			 * yCurr is above anim range
-			 */
-			if (isActive || this.yPrev > t) {
-				this.set(elem, (e: any) => {
-					e.style.opacity = 1;
-				});
-				this._fadeOut.set(elem, false);
+		};
+
+		if (this.yCurr >= t && this.yCurr <= t + d) {
+			// yCurr is within anim range
+			set();
+			return true;
+		} else if (this.yCurr < t) {
+			// yCurr is above anim range
+			// set to final value and stop animation
+			if (isActive || this.yPrev > t + d) {
+				set();
+				return false;
 			}
-		} else if (this.yCurr > t && isActive) {
-			/**
-			 * yCurr is below anim range
-			 */
-			if (isActive || this.yPrev < t - duration) {
-				this.set(elem, (e: any) => {
-					e.style.opacity = 0;
-				});
-				this._fadeOut.set(elem, false);
+		} else if (this.yCurr > t + d && isActive) {
+			// yCurr is below anim range
+			// set to final value and stop animation
+			if (isActive || this.yPrev < t) {
+				set();
+				return false;
 			}
 		}
+		return isActive;
+	}
+
+	_fadeIn = new Map();
+	fadeIn(elem: ElementRef, t: number, d = FADE_DURATION) {
+		let isActive = this._fadeIn.get(elem);
+		isActive = this.fade(elem, isActive, t, d, (t: number, d: number) => {
+			return this.posLinearFn(t, d);
+		});
+		this._fadeIn.set(elem, isActive);
+	}
+
+	_fadeOut = new Map();
+	fadeOut(elem: ElementRef, t: number, d = FADE_DURATION) {
+		let isActive = this._fadeOut.get(elem);
+		isActive = this.fade(elem, isActive, t, d, (t: number, d: number) => {
+			return this.negLinearFn(t, d);
+		});
+		this._fadeOut.set(elem, isActive);
 	}
 
 	_frozen = new Map();
 	freeze(elem: ElementRef, y: number) {
 		let clone = this._frozen.get(elem);
-		if (this.yCurr >= y) {
-			if (clone === undefined) {
-				clone = elem.nativeElement.cloneNode(true);
-				clone.style.position = "fixed";
-				clone.style.top = `${elem.nativeElement.offsetTop - y}px`;
-				clone.style.marginTop = `0px`;
-				elem.nativeElement.after(clone);
-				clone["visible"] = true;
-				this._frozen.set(elem, clone);
-				elem.nativeElement.style.opacity = 0;
-			} else if (!clone.visible) {
-				clone.style.display = "flex";
-				clone.visible = true;
-				elem.nativeElement.style.opacity = 0;
-			}
-		} else if (clone && clone.visible) {
+
+		// lazy init clone
+		if (!clone) {
+			clone = elem.nativeElement.cloneNode(true);
+			clone.style.position = "fixed";
+			clone.style.top = `${elem.nativeElement.offsetTop - y}px`;
+			clone.style.marginTop = `0px`;
+			clone.style.display = "none";
+			elem.nativeElement.after(clone);
+			clone["visible"] = false;
+			this._frozen.set(elem, clone);
+		}
+
+		// show or hide fixed clone
+		if (this.yCurr >= y && !clone.visible) {
+			clone.style.display = "flex";
+			clone.visible = true;
+			elem.nativeElement.style.opacity = 0;
+		} else if (this.yCurr < y && clone.visible) {
 			clone.style.display = "none";
 			clone.visible = false;
 			elem.nativeElement.style.opacity = 1;
 		}
+
+		console.log(clone.visible);
 	}
 
 	@ViewChild("title") enTitle!: ElementRef;
@@ -184,15 +155,12 @@ export class AppComponent implements AfterViewInit {
 
 	@HostListener("window:scroll", ["$event"])
 	onScroll(event: Event) {
+		/**
+		 * update scroll state
+		 */
 		this.yPrev = this.yCurr;
 		this.yCurr = window.pageYOffset;
 
-		let subTitleElem = this.enSubTitle.nativeElement;
-		let logoElem = this.logo.nativeElement;
-		let block2Elem = this.enBlock2.nativeElement;
-		let toolbarElem = this.enToolbar.nativeElement;
-		let linksElem = this.enLinks.nativeElement;
-		let lineElem = this.enLine.nativeElement;
 		let tweetElems = [
 			this.enTweet1.nativeElement,
 			this.enTweet2.nativeElement,
@@ -204,33 +172,48 @@ export class AppComponent implements AfterViewInit {
 		/**
 		 * fade out title & fade in message 1
 		 */
-		this.fadeOut(this.enTitle, 100, 100);
+		this.fadeOut(this.enTitle, 0, 100);
 		this.fadeIn(this.enSubTitle, 0);
 
 		/**
 		 * freeze logo at top of screen and fade it out
 		 */
-		const logoFreezeThreshold = logoElem.offsetTop - PADDING;
-		this.freeze(this.logo, logoFreezeThreshold);
-		this.fadeOut(this.logo, logoFreezeThreshold + FADE_DURATION);
+		const logoFt = this.logo.nativeElement.offsetTop - PADDING;
+		this.freeze(this.logo, logoFt);
+		this.fadeOut(this.logo, logoFt);
+
+		/**
+		 * update the bg color of the toolbar
+		 */
+		this.setAt(
+			this.enToolbar,
+			logoFt + FADE_DURATION,
+			(e: any) => {
+				e.style.backgroundColor = "transparent";
+			},
+			(e: any) => {
+				e.style.backgroundColor = "black";
+			}
+		);
 
 		/**
 		 * fade in toolbar (combine to 1 component)
 		 */
-		this.fadeIn(this.enLinks, logoFreezeThreshold + FADE_DURATION);
-		this.fadeIn(this.enLine, logoFreezeThreshold + FADE_DURATION);
+		this.fadeIn(this.enLinks, logoFt + FADE_DURATION);
+		this.fadeIn(this.enLine, logoFt + FADE_DURATION);
 
 		/**
 		 * freeze message 1 halfway up window & fade out
 		 */
-		const ft = subTitleElem.offsetTop - window.innerHeight / 2;
-		this.freeze(this.enSubTitle, ft);
-		this.fadeOut(this.enSubTitle, ft + FADE_DURATION);
+		const subTitleFt =
+			this.enSubTitle.nativeElement.offsetTop - window.innerHeight / 2;
+		this.freeze(this.enSubTitle, subTitleFt);
+		this.fadeOut(this.enSubTitle, subTitleFt);
 
 		/**
 		 * fade in message 2
 		 */
-		this.fadeIn(this.enBlock2, ft + FADE_DURATION);
+		this.fadeIn(this.enBlock2, subTitleFt + FADE_DURATION);
 
 		/**
 		 * tweet animations
@@ -239,28 +222,12 @@ export class AppComponent implements AfterViewInit {
 			const t = tweet.offsetTop - window.innerHeight / 2;
 			const f = 2;
 			const d = TWEET_ROTATIONS[i];
-			const s = Math.abs(this.negLinearSeq(t) * f) + 1;
+			const s = Math.abs(this.negLinearFn(t) * f) + 1;
 			tweet.style.transform = `scale(${s > 2 ? 2 : s}) rotate(${
-				d + this.negLinearSeq(t) * 20
+				d + this.negLinearFn(t) * 20
 			}deg)`;
-			tweet.style.opacity = this.posLinearSeq(t - FADE_DURATION / 1.5);
+			tweet.style.opacity = this.posLinearFn(t - FADE_DURATION / 1.5);
 		});
-
-		/**
-		 * clean this up
-		 */
-		if (this.yCurr >= this.logoInfo.top + PADDING + FADE_DURATION) {
-			if (
-				toolbarElem.style.backgroundColor === "transparent" ||
-				toolbarElem.style.backgroundColor === ""
-			) {
-				toolbarElem.style.backgroundColor = "black";
-			}
-		} else {
-			if (toolbarElem.style.backgroundColor === "black") {
-				toolbarElem.style.backgroundColor = "transparent";
-			}
-		}
 	}
 
 	ngAfterViewInit() {
