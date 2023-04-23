@@ -89,25 +89,9 @@
 
         <div class="tweets-spacer"></div>
 
+        <app-tweets #tweets></app-tweets>
+
         <!-- Tweets -->
-        <div class="tweets-container" #tweetsContainer>
-            <div *ngFor="let row of tweetRows; index as i">
-                <div *ngFor="let tweet of row; index as i" #tweet>
-                    <blockquote class="twitter-tweet" data-theme="dark">
-                        <p lang="en" dir="ltr">
-                            {{ tweet.content }}
-                        </p>
-                        &mdash; {{ tweet.author }}
-                        <a href="{{ tweet.url }}">{{ tweet.date }}</a>
-                    </blockquote>
-                </div>
-            </div>
-            <script
-                async
-                src="https://platform.twitter.com/widgets.js"
-                charset="utf-8"
-            ></script>
-        </div>
     </div>
 
     <!-- Light section -->

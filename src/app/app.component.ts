@@ -1,13 +1,14 @@
 import {
 	AfterViewInit,
-	ElementRef,
-	ViewChild,
-	HostListener,
 	Component,
-	OnInit,
-	ViewChildren,
+	ElementRef,
+	HostListener,
 	QueryList,
+	ViewChild,
+	ViewChildren,
 } from "@angular/core";
+
+import { TweetsComponent } from "./tweets/tweets.component";
 
 const TITLE_ANIM_THRESHOLD = 100;
 const FADE_DURATION = 300; /* in px */
@@ -30,76 +31,6 @@ export class AppComponent implements AfterViewInit {
 	/**
 	 * put into json file
 	 */
-	tweetRows = new Array<Array<any>>();
-	tweets = [
-		{
-			url: "https://twitter.com/NookTtocs/status/547501432?ref_src=twsrc%5Etfw",
-			author: "nooK ttocS (@NookTtocs)",
-			date: "December 30, 2007",
-			content: `And more recently, Enron and the energy traders took
-			corruption and evilness to a whole new level.`,
-		},
-		{
-			url: "https://twitter.com/Percival/status/367504092?ref_src=twsrc%5Etfw",
-			author: "Sean Percival (@Percival)",
-			date: "October 27, 2007",
-			content: `one thing good about moving is "the purge" why was i
-			keeping bills from 2004 in my file cabinet? shredded
-			so much tonight. feeling enron`,
-		},
-		{
-			url: "https://twitter.com/AndyBoydnl/status/427197372?ref_src=twsrc%5Etfw",
-			author: "Andy Boyd (@AndyBoydnl)",
-			date: "November 19, 2007",
-			content: `Just gob smacked after watching the Enron
-			documentary - we always did wonder how they made
-			money - and of course they didn&#39;t`,
-		},
-		{
-			url: "https://twitter.com/brownsabbath/status/430269402?ref_src=twsrc%5Etfw",
-			author: "Nick Ramirez (@brownsabbath)",
-			date: "November 20, 2007",
-			content: `I&#39;ve shredded my weight in paper today, maybe I
-			should&#39;ve worked at Enron`,
-		},
-		{
-			url: "https://twitter.com/nytimesbusiness/status/453313652?ref_src=twsrc%5Etfw",
-			author: "NYT Business (@nytimesbusiness)",
-			date: "November 29, 2007",
-			content: `3 Bankers Plead Guilty in Case Tied to Enron
-			http://tinyurl.com/2cm2la`,
-		},
-		{
-			url: "https://twitter.com/NookTtocs/status/547501432?ref_src=twsrc%5Etfw",
-			author: "nooK ttocS (@NookTtocs)",
-			date: "December 30, 2007",
-			content: `And more recently, Enron and the energy traders took
-			corruption and evilness to a whole new level.`,
-		},
-		{
-			url: "https://twitter.com/Percival/status/367504092?ref_src=twsrc%5Etfw",
-			author: "Sean Percival (@Percival)",
-			date: "October 27, 2007",
-			content: `one thing good about moving is "the purge" why was i
-			keeping bills from 2004 in my file cabinet? shredded
-			so much tonight. feeling enron`,
-		},
-		{
-			url: "https://twitter.com/AndyBoydnl/status/427197372?ref_src=twsrc%5Etfw",
-			author: "Andy Boyd (@AndyBoydnl)",
-			date: "November 19, 2007",
-			content: `Just gob smacked after watching the Enron
-			documentary - we always did wonder how they made
-			money - and of course they didn&#39;t`,
-		},
-		{
-			url: "https://twitter.com/brownsabbath/status/430269402?ref_src=twsrc%5Etfw",
-			author: "Nick Ramirez (@brownsabbath)",
-			date: "November 20, 2007",
-			content: `I&#39;ve shredded my weight in paper today, maybe I
-			should&#39;ve worked at Enron`,
-		},
-	];
 
 	posLinearFn(threshold: number, duration = FADE_DURATION) {
 		const v = (this.yCurr - threshold) / duration;
@@ -180,18 +111,6 @@ export class AppComponent implements AfterViewInit {
 		this._fadeOut.set(elem, isActive);
 	}
 
-	tweetIndex(i: number) {
-		++i;
-		let currRow = 0;
-		let rowStart = 0;
-		for (let r = 0; r < i; ) {
-			rowStart = r;
-			++currRow;
-			r = r + 2 + currRow - 1;
-		}
-		return { row: --currRow, col: i - rowStart - 1, rowSize: currRow + 2 };
-	}
-
 	@ViewChild("title") enTitle!: ElementRef;
 	@ViewChild("subtitle") enSubTitle!: ElementRef;
 	@ViewChild("tweetHeader") enBlock2!: ElementRef;
@@ -201,8 +120,7 @@ export class AppComponent implements AfterViewInit {
 	@ViewChild("links") enLinks!: ElementRef;
 	@ViewChild("line") enLine!: ElementRef;
 	@ViewChild("titleContainer") titleContainer!: ElementRef;
-	@ViewChildren("tweet") tweetElements!: QueryList<ElementRef>;
-	@ViewChild("tweetsContainer") tweetsContainer!: ElementRef;
+	@ViewChild("tweets") tweets!: TweetsComponent;
 
 	/*
 	 * whether or not there is a scheduled animation frame
@@ -279,8 +197,8 @@ export class AppComponent implements AfterViewInit {
 		/**
 		 * tweet animations
 		 */
-		this.tweetElements.forEach(async (tweet, i) => {
-			const ti = this.tweetIndex(i);
+		this.tweets.elementRefs.forEach(async (tweet, i) => {
+			const ti = this.tweets.index(i);
 
 			/**
 			 * dest rotation in degrees
@@ -326,28 +244,10 @@ export class AppComponent implements AfterViewInit {
 	}
 
 	// MAKE CUSTOM TWEET BOXES
-	structureTweets() {
-		/**
-		 * Create tweet structure
-		 */
-		this.tweets.forEach((tweet, i) => {
-			const ti = this.tweetIndex(i);
-			if (ti.rowSize * 400 > window.innerWidth) {
-				return;
-			}
-			if (ti.row == this.tweetRows.length) {
-				this.tweetRows.push(new Array());
-			}
-			this.tweetRows[ti.row].push(tweet);
-		});
-
-		// 	const cutoff = (this.tweetIndex(this.tweets.length - 1).row + 1) * 400;
-		// 	this.tweetsContainer.nativeElement.style.background = `linear-gradient(180deg, black ${cutoff}px, rgba(0, 0, 0, 0) ${0}px)`;
-	}
+	structureTweets() {}
 
 	ngAfterViewInit() {
 		window.onpageshow = () => {
-			(<any>window).twttr.widgets.load();
 			this.refresh();
 		};
 
