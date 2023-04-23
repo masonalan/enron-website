@@ -1,5 +1,4 @@
 import {
-	AfterViewInit,
 	Component,
 	ElementRef,
 	HostListener,
@@ -10,106 +9,17 @@ import {
 
 import { TweetsComponent } from "./tweets/tweets.component";
 
-const TITLE_ANIM_THRESHOLD = 100;
-const FADE_DURATION = 300; /* in px */
-const TOOLBAR_HEIGHT = 125;
-const LOGO_MARGIN = 70;
-const PADDING = 30;
-const TWEET_ROTATIONS = [20, -20, 4, -20, 20];
+import { AnimateService } from "./animate.service";
 
 @Component({
 	selector: "app-root",
 	templateUrl: "./app.component.html",
 	styleUrls: ["./app.component.scss"],
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent {
 	title = "enron-website";
 
 	yCurr = 0;
-	yPrev = 0;
-
-	/**
-	 * put into json file
-	 */
-
-	posLinearFn(threshold: number, duration = FADE_DURATION) {
-		const v = (this.yCurr - threshold) / duration;
-		if (v < 0) {
-			return 0;
-		} else if (v > 1) {
-			return 1;
-		}
-		return v;
-	}
-
-	negLinearFn(threshold: number, duration = FADE_DURATION) {
-		return 1 - this.posLinearFn(threshold, duration);
-	}
-
-	setAt(elem: ElementRef, t: number, beforeFn: any, afterFn: any) {
-		if (this.yCurr >= t && this.yPrev < t) {
-			afterFn(elem.nativeElement);
-		} else if (this.yCurr < t && this.yPrev >= t) {
-			beforeFn(elem.nativeElement);
-		}
-	}
-
-	fade(
-		elem: ElementRef,
-		isActive: boolean,
-		t: number,
-		d: number,
-		fadeFn: any
-	) {
-		const set = () => {
-			elem.nativeElement.style.opacity = fadeFn(t, d);
-		};
-
-		if (this.yCurr >= t && this.yCurr <= t + d) {
-			/**
-			 *yCurr is within anim range
-			 */
-			set();
-			return true;
-		} else if (this.yCurr < t) {
-			/**
-			 * yCurr is above anim range
-			 * set to final value and stop animation
-			 */
-			if (isActive || this.yPrev > t + d) {
-				set();
-				return false;
-			}
-		} else if (this.yCurr > t + d && isActive) {
-			/**
-			 * yCurr is below anim range
-			 * set to final value and stop animation
-			 */
-			if (isActive || this.yPrev < t) {
-				set();
-				return false;
-			}
-		}
-		return isActive;
-	}
-
-	_fadeIn = new Map();
-	fadeIn(elem: ElementRef, t: number, d = FADE_DURATION) {
-		let isActive = this._fadeIn.get(elem);
-		isActive = this.fade(elem, isActive, t, d, (t: number, d: number) => {
-			return this.posLinearFn(t, d);
-		});
-		this._fadeIn.set(elem, isActive);
-	}
-
-	_fadeOut = new Map();
-	fadeOut(elem: ElementRef, t: number, d = FADE_DURATION) {
-		let isActive = this._fadeOut.get(elem);
-		isActive = this.fade(elem, isActive, t, d, (t: number, d: number) => {
-			return this.negLinearFn(t, d);
-		});
-		this._fadeOut.set(elem, isActive);
-	}
 
 	@ViewChild("title") enTitle!: ElementRef;
 	@ViewChild("subtitle") enSubTitle!: ElementRef;
@@ -132,23 +42,35 @@ export class AppComponent implements AfterViewInit {
 		if (this._saf) return;
 
 		this._saf = true;
+
 		requestAnimationFrame(() => {
 			this.refresh();
 		});
 	}
 
+	// @HostListener("window:onpageshow", ["$event"])
+	// onPageShow(event: Event) {
+	// 	this.refresh();
+	// }
+
+	// @HostListener("window:onresize", ["$event"])
+	// onResize(event: Event) {
+	// 	this.refresh();
+	// }
+
 	refresh() {
 		/**
-		 * update scroll state
+		 * update scroll state & set up animations
 		 */
-		this.yPrev = this.yCurr;
+		const yPrev = this.yCurr;
 		this.yCurr = window.pageYOffset;
+		this.animate.setScrollPos(this.yCurr, yPrev);
 
 		/**
 		 * fade out title & fade in subtitle
 		 */
-		this.fadeOut(this.enTitle, 0, 100);
-		this.fadeIn(this.enSubTitle, 0);
+		this.animate.fadeOut(this.enTitle, 0, 100);
+		this.animate.fadeIn(this.enSubTitle, 0);
 
 		/**
 		 * fade out logo
@@ -156,15 +78,15 @@ export class AppComponent implements AfterViewInit {
 		const logoFt =
 			this.titleContainer.nativeElement.offsetTop +
 			this.titleContainer.nativeElement.offsetHeight -
-			PADDING;
-		this.fadeOut(this.logo, logoFt);
+			30;
+		this.animate.fadeOut(this.logo, logoFt);
 
 		/**
 		 * update the bg color of the toolbar
 		 */
-		this.setAt(
+		this.animate.setAt(
 			this.enToolbar,
-			logoFt + FADE_DURATION,
+			logoFt + this.animate.FADE_DURATION,
 			(e: any) => {
 				e.style.backgroundColor = "transparent";
 			},
@@ -176,8 +98,8 @@ export class AppComponent implements AfterViewInit {
 		/**
 		 * fade in toolbar
 		 */
-		this.fadeIn(this.enLinks, logoFt + FADE_DURATION);
-		this.fadeIn(this.enLine, logoFt + FADE_DURATION);
+		this.animate.fadeIn(this.enLinks, logoFt + this.animate.FADE_DURATION);
+		this.animate.fadeIn(this.enLine, logoFt + this.animate.FADE_DURATION);
 
 		/**
 		 * fade out subtitle
@@ -186,76 +108,33 @@ export class AppComponent implements AfterViewInit {
 			logoFt +
 			this.logo.nativeElement.offsetHeight -
 			window.innerHeight / 2 +
-			FADE_DURATION;
-		this.fadeOut(this.enSubTitle, subTitleFt);
+			this.animate.FADE_DURATION;
+		this.animate.fadeOut(this.enSubTitle, subTitleFt);
 
 		/**
-		 * fade in tweet header
+		 * fade in/fade out tweet header
 		 */
-		this.fadeIn(this.enBlock2, subTitleFt + FADE_DURATION);
+		this.animate.fadeIn(
+			this.enBlock2,
+			subTitleFt + this.animate.FADE_DURATION
+		);
+		console.log(subTitleFt + window.innerHeight * 2);
+		console.log(this.yCurr);
+		this.animate.fadeOut(
+			this.enBlock2,
+			subTitleFt +
+				window.innerHeight * 2 -
+				this.animate.FADE_DURATION -
+				70
+		);
 
 		/**
-		 * tweet animations
+		 * animate tweets if necessary
 		 */
-		this.tweets.elementRefs.forEach(async (tweet, i) => {
-			const ti = this.tweets.index(i);
-
-			/**
-			 * dest rotation in degrees
-			 *
-			 * -20 = left
-			 * 3 = center
-			 * 20 = right
-			 */
-			const destRot =
-				(ti.col + 1) * 2 - 1 == ti.rowSize
-					? 3
-					: ti.col + 1 > ti.rowSize / 2
-					? 30
-					: -70;
-
-			/**
-			 * calculate current rotation
-			 */
-			const thresh = tweet.nativeElement.offsetTop - window.innerHeight;
-			const dur = FADE_DURATION * 2.5;
-			const currRot =
-				destRot +
-				(destRot < 0
-					? this.posLinearFn(thresh, dur)
-					: this.negLinearFn(thresh, dur)) *
-					40;
-
-			/**
-			 * calculate current scale
-			 */
-			let scale =
-				Math.abs(this.negLinearFn(thresh, dur) * 2) + 1 + ti.row / 2.0;
-			scale = scale > 5 ? 5 : scale;
-
-			/**
-			 * apply styles
-			 */
-			tweet.nativeElement.style.transform = `scale(${scale}) rotate(${currRot}deg)`;
-			tweet.nativeElement.style.opacity = this.posLinearFn(thresh);
-		});
+		this.tweets.handleScroll();
 
 		this._saf = false;
 	}
 
-	// MAKE CUSTOM TWEET BOXES
-	structureTweets() {}
-
-	ngAfterViewInit() {
-		window.onpageshow = () => {
-			this.refresh();
-		};
-
-		window.onresize = () => {
-			this.structureTweets();
-			this.refresh();
-		};
-
-		this.structureTweets();
-	}
+	constructor(private animate: AnimateService) {}
 }

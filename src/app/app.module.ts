@@ -3,7 +3,7 @@ import { BrowserModule } from "@angular/platform-browser";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { TweetsComponent } from './tweets/tweets.component';
+import { TweetsComponent } from "./tweets/tweets.component";
 
 @NgModule({
 	declarations: [AppComponent, TweetsComponent],
