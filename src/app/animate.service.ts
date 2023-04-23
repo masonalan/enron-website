@@ -6,7 +6,7 @@ import { Injectable, ElementRef } from "@angular/core";
 export class AnimateService {
 	FADE_DURATION = 300;
 
-	private _yCurr = 0;
+	_yCurr = 0;
 	private _yPrev = 0;
 	private _fadeIn = new Map<ElementRef, any>();
 	private _fadeOut = new Map<ElementRef, any>();

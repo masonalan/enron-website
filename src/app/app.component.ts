@@ -118,8 +118,6 @@ export class AppComponent {
 			this.enBlock2,
 			subTitleFt + this.animate.FADE_DURATION
 		);
-		console.log(subTitleFt + window.innerHeight * 2);
-		console.log(this.yCurr);
 		this.animate.fadeOut(
 			this.enBlock2,
 			subTitleFt +

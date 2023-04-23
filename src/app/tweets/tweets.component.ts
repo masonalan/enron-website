@@ -1,6 +1,7 @@
 import {
 	Component,
 	HostListener,
+	ViewChild,
 	ViewChildren,
 	QueryList,
 	ElementRef,
@@ -16,6 +17,7 @@ import tweetData from "../../assets/tweets.json";
 	styleUrls: ["./tweets.component.scss"],
 })
 export class TweetsComponent {
+	@ViewChild("container") container!: ElementRef;
 	@ViewChildren("tweet") elementRefs!: QueryList<ElementRef>;
 
 	/**
@@ -68,7 +70,6 @@ export class TweetsComponent {
 		 * tweet animations
 		 */
 		this.elementRefs.forEach(async (tweet, i) => {
-			console.log("each tweet");
 			const ti = this.index(i);
 
 			/**
@@ -88,7 +89,10 @@ export class TweetsComponent {
 			/**
 			 * calculate current rotation
 			 */
-			const thresh = tweet.nativeElement.offsetTop - window.innerHeight;
+			const thresh =
+				this.container.nativeElement.parentElement.offsetTop -
+				window.innerHeight * 1.9 +
+				ti.row * 700;
 			const dur = this.animate.FADE_DURATION * 2.5;
 			const currRot =
 				destRot +
@@ -109,7 +113,7 @@ export class TweetsComponent {
 			/**
 			 * apply styles
 			 */
-			//tweet.nativeElement.style.transform = `scale(${scale}) rotate(${currRot}deg)`;
+			tweet.nativeElement.style.transform = `scale(${scale}) rotate(${currRot}deg)`;
 			tweet.nativeElement.style.opacity =
 				this.animate.posLinearFn(thresh);
 		});

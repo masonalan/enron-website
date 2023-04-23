@@ -1,16 +1,18 @@
-<div class="tweets-container" #tweetsContainer>
+<div class="tweets-container" #container>
 	<div *ngFor="let row of structure; index as i">
 		<div *ngFor="let tweet of row; index as i" class="tweet" #tweet>
-			<div class="tweet-top">
-				<div class="tweet-header">
-					<a href="{{ tweet.url }}"
-						><div class="profile-picture">TM</div></a
+			<div class="tweet-header">
+				<div class="tweet-profile">
+					<a href="{{ tweet.url }}" target="_blank"
+						><div class="tweet-thumbnail">TM</div></a
 					>
 					<div class="vertical-center">
-						<a class="author" href="{{ tweet.url }}">{{
+						<a class="tweet-author" href="{{ tweet.url }}">{{
 							tweet.author
 						}}</a>
-						<a href="{{ tweet.url }}"> {{ tweet.handle }}</a>
+						<a href="{{ tweet.url }}" target="_blank">
+							{{ tweet.handle }}</a
+						>
 					</div>
 				</div>
 				<svg>
@@ -23,7 +25,7 @@
 				<p lang="en" dir="ltr">
 					{{ tweet.content }}
 				</p>
-				<a href="{{ tweet.url }}">{{ tweet.date }}</a>
+				<a href="{{ tweet.url }}" target="_blank">{{ tweet.date }}</a>
 			</blockquote>
 		</div>
 	</div>
