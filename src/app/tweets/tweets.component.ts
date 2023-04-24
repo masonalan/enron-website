@@ -5,6 +5,7 @@ import {
 	ViewChildren,
 	QueryList,
 	ElementRef,
+	AfterViewInit,
 } from "@angular/core";
 
 import { AnimateService } from "./../animate.service";
@@ -16,7 +17,7 @@ import tweetData from "../../assets/tweets.json";
 	templateUrl: "./tweets.component.html",
 	styleUrls: ["./tweets.component.scss"],
 })
-export class TweetsComponent {
+export class TweetsComponent implements AfterViewInit {
 	@ViewChild("container") container!: ElementRef;
 	@ViewChildren("tweet") elementRefs!: QueryList<ElementRef>;
 
@@ -28,10 +29,10 @@ export class TweetsComponent {
 	/**
 	 * tweet indexes that map to the first tweet in each row
 	 */
-	rowStarts = [0, 2, 3, 6, 8];
+	rowStarts = [0, 2, 3, 5, 8];
 
 	/**
-	 * get row, col & rowSize based on a tweet index
+	 * get row, col & rowSize based on a tweet indexm
 	 */
 	index(i: number) {
 		++i;
@@ -47,28 +48,57 @@ export class TweetsComponent {
 		};
 	}
 
+	setTop(top: number) {
+		this.container.nativeElement.parentElement.style.top = `-${top}px`;
+	}
+
+	private _height = 0;
+	height() {
+		return this._height;
+	}
+
 	/**
 	 * restructure tweets based on window width
 	 */
-	//@HostListener("window:resize", ["$event"])
+	@HostListener("window:resize", ["$event"])
 	reStructure() {
 		/**
-		 * Create tweet structure
+		 * create tweet structure
 		 */
 		this.structure.length = 0;
 		tweetData.forEach((tweet, i) => {
 			const ti = this.index(i);
+			/**
+			 * for mobile, we only want to show the first 3 rows (its enough for the transition)
+			 */
+			if (window.innerWidth <= 815 && ti.row > 2) {
+				return;
+			}
 			if (ti.row == this.structure.length) {
 				this.structure.push(new Array());
 			}
 			this.structure[ti.row].push(tweet);
 		});
+
+		if (!this.elementRefs) {
+			return;
+		}
+		const rect = this.elementRefs
+			.get(this.elementRefs.length - 1)!
+			.nativeElement.getBoundingClientRect();
+		this._height =
+			rect.top +
+			rect.height / 2 -
+			this.container.nativeElement.parentElement.getBoundingClientRect()
+				.top;
+		console.log(this._height);
 	}
 
 	handleScroll() {
 		/**
 		 * tweet animations
 		 */
+		console.log(this.elementRefs);
 		this.elementRefs.forEach(async (tweet, i) => {
 			const ti = this.index(i);
 
@@ -83,23 +113,28 @@ export class TweetsComponent {
 				(ti.col + 1) * 2 - 1 == ti.rowSize
 					? 3
 					: ti.col + 1 > ti.rowSize / 2
-					? 30
-					: -70;
+					? 0
+					: -80;
 
 			/**
 			 * calculate current rotation
+			 * TODO: this threshold logic is not responsive - please fix asap
 			 */
 			const thresh =
 				this.container.nativeElement.parentElement.offsetTop -
-				window.innerHeight * 1.9 +
-				ti.row * 700;
+				window.innerHeight +
+				ti.row * 500 +
+				ti.col * 50;
 			const dur = this.animate.FADE_DURATION * 2.5;
 			const currRot =
 				destRot +
 				(destRot < 0
-					? this.animate.posLinearFn(thresh, dur)
-					: this.animate.negLinearFn(thresh, dur)) *
-					40;
+					? this.animate.posLinearFn(thresh, window.innerHeight * 2)
+					: this.animate.negLinearFn(
+							thresh,
+							window.innerHeight * 2
+					  )) *
+					80;
 
 			/**
 			 * calculate current scale
@@ -117,6 +152,10 @@ export class TweetsComponent {
 			tweet.nativeElement.style.opacity =
 				this.animate.posLinearFn(thresh);
 		});
+	}
+
+	ngAfterViewInit() {
+		this.reStructure();
 	}
 
 	constructor(private animate: AnimateService) {

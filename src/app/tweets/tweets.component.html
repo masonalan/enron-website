@@ -1,5 +1,8 @@
 <div class="tweets-container" #container>
-	<div *ngFor="let row of structure; index as i">
+	<div
+		*ngFor="let row of structure; index as i"
+		style="margin-top:{{ i == 0 ? 50 : (structure.length - i) * i + 30 }}vh"
+	>
 		<div *ngFor="let tweet of row; index as i" class="tweet" #tweet>
 			<div class="tweet-header">
 				<div class="tweet-profile">

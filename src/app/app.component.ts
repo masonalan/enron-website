@@ -31,6 +31,8 @@ export class AppComponent {
 	@ViewChild("line") enLine!: ElementRef;
 	@ViewChild("titleContainer") titleContainer!: ElementRef;
 	@ViewChild("tweets") tweets!: TweetsComponent;
+	@ViewChild("curtain") curtain!: ElementRef;
+	@ViewChild("tweetsSpacer") tweetsSpacer!: ElementRef;
 
 	/*
 	 * whether or not there is a scheduled animation frame
@@ -47,16 +49,6 @@ export class AppComponent {
 			this.refresh();
 		});
 	}
-
-	// @HostListener("window:onpageshow", ["$event"])
-	// onPageShow(event: Event) {
-	// 	this.refresh();
-	// }
-
-	// @HostListener("window:onresize", ["$event"])
-	// onResize(event: Event) {
-	// 	this.refresh();
-	// }
 
 	refresh() {
 		/**
@@ -118,18 +110,32 @@ export class AppComponent {
 			this.enBlock2,
 			subTitleFt + this.animate.FADE_DURATION
 		);
-		this.animate.fadeOut(
+
+		const tweetHeaderFO = this.animate.fadeOut(
 			this.enBlock2,
 			subTitleFt +
-				window.innerHeight * 2 -
-				this.animate.FADE_DURATION -
-				70
+				this.animate.FADE_DURATION +
+				window.innerHeight +
+				this.tweets.height()
 		);
 
 		/**
 		 * animate tweets if necessary
 		 */
 		this.tweets.handleScroll();
+
+		const spacerHeight = this.tweets.height();
+
+		console.log(this.tweets.height());
+		this.curtain.nativeElement.style.height = `${
+			subTitleFt +
+			this.animate.FADE_DURATION +
+			window.innerHeight +
+			this.tweets.height()
+		}px`;
+
+		this.tweetsSpacer.nativeElement.style.height = `${this.tweets.height()}px`;
+		this.tweets.setTop(this.tweets.height());
 
 		this._saf = false;
 	}

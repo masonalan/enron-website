@@ -38,7 +38,7 @@ $toolbar-height-mobile: 75px;
 	background-color: transparent;
 	display: flex;
 	justify-content: center;
-	z-index: 2;
+	z-index: 20;
 
 	a {
 		vertical-align: middle;
@@ -89,11 +89,10 @@ $toolbar-height-mobile: 75px;
 	background-color: white;
 	width: 100%;
 	opacity: 0;
-	z-index: 2;
+	z-index: 20;
 }
 
 .tweets-spacer {
-	height: 200vh;
 	width: 100%;
 }
 
@@ -226,6 +225,7 @@ h2 {
 	background: black;
 	z-index: 1;
 	position: relative;
+	height: 100vh;
 }
 
 #login-button {
