@@ -17,22 +17,18 @@ import { AnimateService } from "./animate.service";
 	styleUrls: ["./app.component.scss"],
 })
 export class AppComponent {
-	title = "enron-website";
-
 	yCurr = 0;
 
-	@ViewChild("title") enTitle!: ElementRef;
-	@ViewChild("subtitle") enSubTitle!: ElementRef;
-	@ViewChild("tweetHeader") enBlock2!: ElementRef;
+	@ViewChild("title") title!: ElementRef;
+	@ViewChild("subtitle") subtitle!: ElementRef;
+	@ViewChild("tweetHeader") tweetHeader!: ElementRef;
 	@ViewChild("logo") logo!: ElementRef;
-	@ViewChild("firstquote") enFirstQuote!: ElementRef;
-	@ViewChild("toolbar") enToolbar!: ElementRef;
-	@ViewChild("links") enLinks!: ElementRef;
-	@ViewChild("line") enLine!: ElementRef;
+	@ViewChild("toolbar") toolbar!: ElementRef;
+	@ViewChild("links") links!: ElementRef;
+	@ViewChild("line") line!: ElementRef;
 	@ViewChild("titleContainer") titleContainer!: ElementRef;
 	@ViewChild("tweets") tweets!: TweetsComponent;
 	@ViewChild("curtain") curtain!: ElementRef;
-	@ViewChild("tweetsSpacer") tweetsSpacer!: ElementRef;
 	@ViewChild("main") main!: ElementRef;
 
 	/*
@@ -62,8 +58,8 @@ export class AppComponent {
 		/**
 		 * fade out title & fade in subtitle
 		 */
-		this.animate.fadeOut(this.enTitle, 0, 100);
-		this.animate.fadeIn(this.enSubTitle, 0);
+		this.animate.fadeOut(this.title, 0, 100);
+		this.animate.fadeIn(this.subtitle, 0);
 
 		/**
 		 * fade out logo
@@ -78,21 +74,21 @@ export class AppComponent {
 		 * update the bg color of the toolbar
 		 */
 		this.animate.setAt(
-			this.enToolbar,
+			this.toolbar,
 			logoFt + this.animate.FADE_DURATION,
 			(e: any) => {
-				e.style.backgroundColor = "transparent";
+				e.style.background = "transparent";
 			},
 			(e: any) => {
-				e.style.backgroundColor = "black";
+				e.style.background = "black";
 			}
 		);
 
 		/**
 		 * fade in toolbar
 		 */
-		this.animate.fadeIn(this.enLinks, logoFt + this.animate.FADE_DURATION);
-		this.animate.fadeIn(this.enLine, logoFt + this.animate.FADE_DURATION);
+		this.animate.fadeIn(this.links, logoFt + this.animate.FADE_DURATION);
+		this.animate.fadeIn(this.line, logoFt + this.animate.FADE_DURATION);
 
 		/**
 		 * fade out subtitle
@@ -102,18 +98,18 @@ export class AppComponent {
 			this.logo.nativeElement.offsetHeight -
 			window.innerHeight / 2 +
 			this.animate.FADE_DURATION;
-		this.animate.fadeOut(this.enSubTitle, subTitleFt);
+		this.animate.fadeOut(this.subtitle, subTitleFt);
 
 		/**
 		 * fade in/fade out tweet header
 		 */
 		this.animate.fadeIn(
-			this.enBlock2,
+			this.tweetHeader,
 			subTitleFt + this.animate.FADE_DURATION
 		);
 
 		const tweetHeaderFO = this.animate.fadeOut(
-			this.enBlock2,
+			this.tweetHeader,
 			subTitleFt +
 				this.animate.FADE_DURATION +
 				window.innerHeight +
@@ -138,13 +134,14 @@ export class AppComponent {
 		this.tweets.setTop(this.tweets.height());
 
 		this.animate.setAt(
-			this.main,
-			window.innerHeight,
+			this.toolbar,
+			this.curtain.nativeElement.offsetHeight,
 			(e: any) => {
-				e.style.opacity = 0;
+				e.style.background = "black";
+				e.style.transition = "background 0.1s";
 			},
 			(e: any) => {
-				e.style.opacity = 1;
+				e.style.background = "white";
 			}
 		);
 
