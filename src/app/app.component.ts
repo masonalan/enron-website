@@ -33,6 +33,7 @@ export class AppComponent {
 	@ViewChild("tweets") tweets!: TweetsComponent;
 	@ViewChild("curtain") curtain!: ElementRef;
 	@ViewChild("tweetsSpacer") tweetsSpacer!: ElementRef;
+	@ViewChild("main") main!: ElementRef;
 
 	/*
 	 * whether or not there is a scheduled animation frame
@@ -124,9 +125,9 @@ export class AppComponent {
 		 */
 		this.tweets.handleScroll();
 
-		const spacerHeight = this.tweets.height();
-
-		console.log(this.tweets.height());
+		/**
+		 * update the height of the curtain to include the tweets
+		 */
 		this.curtain.nativeElement.style.height = `${
 			subTitleFt +
 			this.animate.FADE_DURATION +
@@ -134,8 +135,32 @@ export class AppComponent {
 			this.tweets.height()
 		}px`;
 
-		this.tweetsSpacer.nativeElement.style.height = `${this.tweets.height()}px`;
 		this.tweets.setTop(this.tweets.height());
+
+		this.animate.setAt(
+			this.main,
+			window.innerHeight,
+			(e: any) => {
+				e.style.opacity = 0;
+			},
+			(e: any) => {
+				e.style.opacity = 1;
+			}
+		);
+
+		/**
+		 * hide main container so that if we scroll < 0 on chrome it won't show
+		 */
+		this.animate.setAt(
+			this.main,
+			window.innerHeight,
+			(e: any) => {
+				e.style.opacity = 0;
+			},
+			(e: any) => {
+				e.style.opacity = 1;
+			}
+		);
 
 		this._saf = false;
 	}
