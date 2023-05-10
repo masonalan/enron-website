@@ -1,5 +1,6 @@
 :host {
-	position: relative;
+	position: absolute;
+	width: 100vw;
 
 	.tweets-container {
 		display: flex;

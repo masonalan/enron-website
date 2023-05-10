@@ -1,23 +1,34 @@
 import { Injectable, ElementRef } from "@angular/core";
 
+export type AnimationContext = {
+	yCurr: number;
+	yPrev: number;
+	initAnims: boolean;
+};
+
+export enum AnimationState {
+	Pre,
+	Active,
+	Post,
+}
+
 @Injectable({
 	providedIn: "root",
 })
 export class AnimateService {
 	FADE_DURATION = 300;
 
-	_yCurr = 0;
-	_yPrev = 0;
-	private _fadeIn = new Map<ElementRef, any>();
-	private _fadeOut = new Map<ElementRef, any>();
+	private _fadeIn = new Map<ElementRef, AnimationState>();
+	private _fadeOut = new Map<ElementRef, AnimationState>();
 
-	setScrollPos(yCurr: number, yPrev: number) {
-		this._yCurr = yCurr;
-		this._yPrev = yPrev;
+	private _context!: AnimationContext;
+
+	setContext(context: AnimationContext) {
+		this._context = context;
 	}
 
 	posLinearFn(threshold: number, duration = this.FADE_DURATION) {
-		const v = (this._yCurr - threshold) / duration;
+		const v = (this._context.yCurr - threshold) / duration;
 		if (v < 0) {
 			return 0;
 		} else if (v > 1) {
@@ -31,66 +42,83 @@ export class AnimateService {
 	}
 
 	setAt(elem: ElementRef, t: number, beforeFn: any, afterFn: any) {
-		if (this._yCurr >= t && this._yPrev < t) {
+		if (
+			this._context.yCurr >= t &&
+			(this._context.yPrev < t || this._context.initAnims)
+		) {
 			afterFn(elem.nativeElement);
-		} else if (this._yCurr < t && this._yPrev >= t) {
+		} else if (
+			this._context.yCurr < t &&
+			(this._context.yPrev >= t || this._context.initAnims)
+		) {
 			beforeFn(elem.nativeElement);
 		}
 	}
 
 	fade(
 		elem: ElementRef,
-		isActive: boolean,
+		state: AnimationState | undefined,
 		t: number,
 		d: number,
 		fadeFn: any
 	) {
 		const set = () => {
 			elem.nativeElement.style.opacity = fadeFn(t, d);
+			console.log(elem);
+			console.log(fadeFn(t, d));
 		};
 
-		if (this._yCurr >= t && this._yCurr <= t + d) {
+		if (this._context.yCurr >= t && this._context.yCurr <= t + d) {
 			/**
 			 *yCurr is within anim range
 			 */
 			set();
-			return true;
-		} else if (this._yCurr < t) {
+			return AnimationState.Active;
+		} else if (this._context.yCurr < t) {
 			/**
 			 * yCurr is above anim range
 			 * set to final value and stop animation
 			 */
-			if (isActive || this._yPrev > t + d) {
+			if (
+				state === AnimationState.Active ||
+				this._context.yPrev > t + d
+			) {
 				set();
-				return false;
 			}
-		} else if (this._yCurr > t + d && isActive) {
+			return AnimationState.Pre;
+		} else {
 			/**
 			 * yCurr is below anim range
 			 * set to final value and stop animation
 			 */
-			if (isActive || this._yPrev < t) {
+			if (state === AnimationState.Active || this._context.yPrev < t) {
 				set();
-				return false;
 			}
+			return AnimationState.Post;
 		}
-		return isActive;
+		return state;
 	}
 
-	fadeIn(elem: ElementRef, t: number, d = this.FADE_DURATION) {
-		let isActive = this._fadeIn.get(elem);
-		isActive = this.fade(elem, isActive, t, d, (t: number, d: number) => {
+	fadeIn(
+		elem: ElementRef,
+		t: number,
+		after: any = () => {},
+		d = this.FADE_DURATION
+	) {
+		let state = this._fadeIn.get(elem);
+		state = this.fade(elem, state, t, d, (t: number, d: number) => {
 			return this.posLinearFn(t, d);
 		});
-		this._fadeIn.set(elem, isActive);
+		this._fadeIn.set(elem, state!);
 	}
 
 	fadeOut(elem: ElementRef, t: number, d = this.FADE_DURATION) {
-		let isActive = this._fadeOut.get(elem);
-		isActive = this.fade(elem, isActive, t, d, (t: number, d: number) => {
+		let state = this._fadeOut.get(elem);
+		state = this.fade(elem, state, t, d, (t: number, d: number) => {
+			console.log("p:" + this.negLinearFn(t, d));
 			return this.negLinearFn(t, d);
 		});
-		this._fadeOut.set(elem, isActive);
+		this._fadeOut.set(elem, state!);
 	}
 
 	constructor() {}

@@ -49,7 +49,7 @@ export class TweetsComponent implements AfterViewInit {
 	}
 
 	setTop(top: number) {
-		this.container.nativeElement.parentElement.style.top = `-${top}px`;
+		this.container.nativeElement.parentElement.style.top = `${top}px`;
 	}
 
 	private _height = 0;
@@ -91,14 +91,12 @@ export class TweetsComponent implements AfterViewInit {
 			rect.height / 2 -
 			this.container.nativeElement.parentElement.getBoundingClientRect()
 				.top;
-		console.log(this._height);
 	}
 
 	handleScroll() {
 		/**
 		 * tweet animations
 		 */
-		console.log(this.elementRefs);
 		this.elementRefs.forEach(async (tweet, i) => {
 			const ti = this.index(i);
 

@@ -1,105 +1,12 @@
 <style>
-    :host {
-        font-family: "Arial Black";
-        color: #fff;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-    }
-
-    #tweet1 {
-        transform: rotate(-20deg);
-        margin-top: 100px;
-    }
-
-    #tweet2 {
-        transform: rotate(20deg);
-    }
-
-    #tweet3 {
-        transform: rotate(-20deg);
-    }
-
-    #tweet4 {
-        transform: rotate(20deg);
-    }
-
-    #tweet5 {
-        transform: rotate(-20deg);
-        margin-top: 100px;
-    }
-
-    #easy {
-        opacity: 0;
-    }
+	:host {
+		font-family: "Arial Black";
+		color: #fff;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
 </style>
 
 <div>
-    <!-- Toolbar -->
-    <div #toolbar class="toolbar">
-        <div class="toolbar-edge">
-            <div class="vertical-center">
-                <a href="#">
-                    <img src="assets/enron_logo.png" />
-                </a>
-            </div>
-        </div>
-        <div #links class="toolbar-center">
-            <a href="#">Home</a>
-            <a href="#">Shop</a>
-            <a href="#">Who We Are</a>
-            <a href="#">PR</a>
-            <a href="#">Executive Summary</a>
-        </div>
-        <div class="toolbar-edge">
-            <div id="login-button" class="vertical-center">
-                <a href="#" class="button"><i>my</i><b>Enron</b></a>
-            </div>
-            <a id="mobile-menu" href="#"><img src="assets/list.svg" /></a>
-        </div>
-    </div>
-    <div #line class="toolbar-line"></div>
-
-    <div class="curtain" #curtain>
-        <!-- Title -->
-        <div #titleContainer class="container">
-            <h1 #title class="title">WE'RE BACK... <br />CAN WE TALK?</h1>
-        </div>
-
-        <!-- Logo -->
-        <div #logo class="logo-container">
-            <img src="assets/enron_logo_gradient.png" class="logo" />
-        </div>
-
-        <!-- Subtitle -->
-        <div class="text-container sticky-v-center">
-            <h2 class="subtitle" #subtitle>
-                Enron is committed to showing you<br />why we deserve a second
-                chance.
-            </h2>
-        </div>
-
-        <!-- Tweet Header -->
-        <div class="text-container sticky-v-center">
-            <h2 class="subtitle" #tweetHeader>
-                We know it’s not going to be easy…
-            </h2>
-        </div>
-    </div>
-
-    <!-- Tweets -->
-    <app-tweets #tweets></app-tweets>
-
-    <!-- Light section -->
-    <div class="main-container" #main>
-        <div class="container">
-            <img src="assets/enron_logo.png" class="color-logo" />
-        </div>
-        <div style="margin-top: 100px" class="container">
-            <h1>We hear you.</h1>
-        </div>
-    </div>
-
-    <div style="height: 1000px"></div>
-
-    <router-outlet></router-outlet>
+	<router-outlet></router-outlet>
 </div>
