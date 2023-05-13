@@ -34,6 +34,8 @@ export class LandingComponent implements AfterViewInit {
 	@ViewChild("commitments") commitments!: ElementRef;
 	@ViewChild("main") main!: ElementRef;
 	@ViewChild("video") video!: ElementRef;
+	@ViewChildren("vCenterTop") vCenterTops!: QueryList<ElementRef>;
+	@ViewChildren("vCenterBottom") vCenterBottoms!: QueryList<ElementRef>;
 
 	/*
 	 * whether or not there is a scheduled animation frame
@@ -51,7 +53,7 @@ export class LandingComponent implements AfterViewInit {
 
 	@HostListener("window:resize", ["$event"])
 	onResize(event: Event) {
-		this.refresh;
+		this.refresh();
 	}
 
 	@HostListener("window:scroll", ["$event"])
@@ -67,25 +69,15 @@ export class LandingComponent implements AfterViewInit {
 		});
 	}
 
-	refresh(initAnims: boolean = false) {
-		if (window.innerWidth <= 375) {
-			this.subtitleContent =
-				"Enron is committed to showing<br />you why we deserve<br />a second chance.";
-		} else {
-			this.subtitleContent =
-				"Enron is committed to showing you<br />why we deserve a second chance.";
-		}
+	isMobile() {
+		return window.innerWidth <= 815;
+	}
 
+	refresh(initAnims: boolean = false) {
 		/**
 		 * update scroll state & set up animations
 		 */
-		const yPrev = this.yCurr;
-		const yCurr = window.pageYOffset;
-		if (initAnims) {
-			console.log("First Scroll");
-		}
-		this.animate.setContext({ yCurr, yPrev, initAnims });
-		this.yCurr = yCurr;
+		this.animate.setContext(window.pageYOffset, initAnims);
 
 		/**
 		 * fade out title & fade in subtitle
@@ -98,72 +90,85 @@ export class LandingComponent implements AfterViewInit {
 		const logoFt =
 			this.titleContainer.nativeElement.offsetTop +
 			this.titleContainer.nativeElement.offsetHeight -
-			30;
-		this.animate.fadeOut(this.logo, logoFt);
+			(this.isMobile() ? 75 : 30);
+		this.animate.fadeOut(this.logo, logoFt, 100);
 
 		/**
-		 * fade out subtitle
+		 * fade in/out subtitle
 		 */
-		const subTitleFt =
+		const subtitleFt =
 			logoFt +
 			this.logo.nativeElement.offsetHeight -
 			window.innerHeight / 2 +
 			this.animate.FADE_DURATION;
-
 		this.animate.fadeIn(this.subtitle, 0);
-		this.animate.fadeOut(this.subtitle, subTitleFt);
+		this.animate.fadeOut(this.subtitle, subtitleFt);
 
 		/**
-		 * fade in/fade out tweet header
+		 * animate scale on subtitle
+		 */
+		this.subtitle.nativeElement.style.transform = `scale(${this.animate.posLinearFn(
+			0
+		)})`;
+
+		/**
+		 * make sure subtitle & tweet header stick at vertical center
+		 */
+		this.vCenterTops.forEach((v) => {
+			v.nativeElement.style.top = `${
+				(window.innerHeight - v.nativeElement.offsetHeight) / 2
+			}px`;
+		});
+		this.vCenterBottoms.forEach((v) => {
+			v.nativeElement.style.bottom = `${
+				(window.innerHeight - v.nativeElement.offsetHeight) / 2
+			}px`;
+		});
+
+		/**
+		 * fade in out tweet header
 		 */
 		this.animate.fadeIn(
 			this.tweetHeader,
-			subTitleFt + this.animate.FADE_DURATION
-		);
-
-		const tweetHeaderFO = this.animate.fadeOut(
-			this.tweetHeader,
-			subTitleFt +
-				this.animate.FADE_DURATION +
-				window.innerHeight +
-				this.tweets.height()
+			subtitleFt + this.animate.FADE_DURATION / 2
 		);
 
 		/**
 		 * update the height of the curtain to include the tweets
 		 */
 		const curtainHeight =
-			subTitleFt +
+			subtitleFt +
 			this.animate.FADE_DURATION +
 			window.innerHeight +
 			this.tweets.height();
 		this.curtain.nativeElement.style.height = `${curtainHeight}px`;
-
-		const tweetsHeight = this.tweets.height();
-		this.tweets.setTop(curtainHeight - tweetsHeight);
-		//this.commitments.nativeElement.style.top = `-${tweetsHeight}px`;
-		/**
-		 * hide main container so that if we scroll < 0 on chrome it won't show
-		 */
-		this.animate.setAt(
-			this.main,
-			window.innerHeight,
-			(e: any) => {
-				e.style.opacity = 0;
-			},
-			(e: any) => {
-				e.style.opacity = 1;
-			}
-		);
+		this.tweets.setTop(curtainHeight - this.tweets.height());
 
 		/**
 		 * animate tweets & toolbar
 		 */
-		this.toolbar.handleScroll(curtainHeight, logoFt);
+		this.toolbar.handleScroll(curtainHeight, logoFt + 50);
 		this.tweets.handleScroll();
 
+		/**
+		 * hide main container so that if we scroll < 0 on chrome it won't show
+		 */
+		// this.animate.setAt(
+		// 	this.main,
+		// 	window.innerHeight,
+		// 	(e: any) => {
+		// 		e.style.opacity = 0;
+		// 	},
+		// 	(e: any) => {
+		// 		e.style.opacity = 1;
+		// 	}
+		// );
+
+		/**
+		 * animate scale & opacity on video
+		 */
 		this.video.nativeElement.style.transform = `scale(${this.animate.posLinearFn(
-			this.curtain.nativeElement.offsetHeight
+			this.curtain.nativeElement.offsetHeight - 100
 		)})`;
 		this.video.nativeElement.style.opacity = this.animate.posLinearFn(
 			this.curtain.nativeElement.offsetHeight

@@ -17,13 +17,12 @@ export class ToolbarComponent {
 	@ViewChild("menu") menu!: MenuComponent;
 	@ViewChild("path") path!: ElementRef;
 
-	handleScroll(curtainHeight: number, logoFt: number) {
-		console.log("pna" + curtainHeight);
+	handleScroll(curtainHeight: number, ft: number) {
 		/**
 		 * fade in toolbar
 		 */
-		this.animate.fadeIn(this.links, logoFt + this.animate.FADE_DURATION);
-		this.animate.fadeIn(this.line, logoFt + this.animate.FADE_DURATION);
+		this.animate.fadeIn(this.links, ft);
+		this.animate.fadeIn(this.line, ft);
 
 		/**
 		 * fade in menu bar
@@ -44,7 +43,7 @@ export class ToolbarComponent {
 		 */
 		this.animate.setAt(
 			this.toolbarBg,
-			logoFt + this.animate.FADE_DURATION,
+			ft,
 			(e: any) => {
 				e.style.opacity = 0;
 			},

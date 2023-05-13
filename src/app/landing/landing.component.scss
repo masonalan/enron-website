@@ -15,26 +15,33 @@
 	top: 30px;
 }
 
+.subtitle-container {
+	@extend .text-container;
+	position: sticky;
+}
+
 .main-container {
+	@extend .container;
 	background-color: white;
 	width: 100%;
 	color: black;
 	position: sticky;
 	z-index: 0;
 	opacity: 0;
-	padding-top: $toolbar-height;
 	height: 100vh;
 	bottom: 0px;
-	margin-top: $fade-duration;
+	margin-top: 100px;
+}
+
+.subtitle {
+	opacity: 0;
+	z-index: 3;
+	margin: 0;
 }
 
 .color-logo {
 	margin-top: 100px;
 	width: 500px;
-}
-
-.under-logo {
-	margin-top: $fade-duration;
 }
 
 .we-hear-you {
@@ -60,22 +67,19 @@
 	width: 800px;
 }
 
-.we-need-you,
-.footer {
-	margin-top: 200px;
+.title {
+	margin-top: 30px;
 }
 
-.we-need-you {
-	text-align: center;
+.video-container {
+	@extend .container;
+	padding-left: 30px;
+	padding-right: 30px;
 }
 
 @media screen and (max-width: 815px) {
 	.logo-container {
 		top: $toolbar-height-mobile;
-	}
-
-	.we-hear-you {
-		margin-top: $toolbar-height-mobile;
 	}
 }
 
@@ -85,12 +89,18 @@
 	}
 
 	.careers-box {
-		width: 70%;
+		width: 100%;
 	}
 }
 
 @media screen and (min-width: 1740px) {
 	.logo {
 		width: 1217.3px;
+	}
+}
+
+@media screen and (max-width: 815px) {
+	.title {
+		margin-top: $toolbar-height-mobile;
 	}
 }

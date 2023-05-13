@@ -25,7 +25,7 @@
 body {
 	margin: 0;
 	padding: 0;
-	background-color: black;
+	background-color: white;
 	max-width: 100%;
 	overflow-x: hidden;
 }
@@ -38,7 +38,10 @@ body {
 
 .sticky-v-center {
 	position: sticky;
-	top: 43vh;
+}
+
+.spacer {
+	height: 30px;
 }
 
 /**
@@ -89,31 +92,18 @@ body {
  */
 
 h1 {
-	font-size: 150px;
-	line-height: 115px;
-	margin-top: 30px;
-	margin-left: 30px;
-	margin-right: 30px;
-	margin-bottom: 100px;
+	font-size: 200px;
+	line-height: 170px;
 }
 
 h2 {
-	font-size: 50px;
-	line-height: 43.5px;
+	font-size: 150px;
+	line-height: 127.5px;
 }
 
 h3 {
 	font-size: 30px;
 	line-height: 21px;
-}
-
-.text-container {
-	@extend .container;
-
-	h2 {
-		padding-left: 30px;
-		padding-right: 30px;
-	}
 }
 
 p {
@@ -139,13 +129,7 @@ p {
 	display: flex;
 }
 
-.subtitle {
-	margin-top: 70px;
-	opacity: 0;
-}
-
 video {
-	border: 2px solid black;
 	aspect-ratio: 16 / 9;
 }
 
@@ -172,26 +156,26 @@ video {
 }
 
 @media screen and (max-width: 1809px) {
-	.title {
-		font-size: 100px;
-		line-height: 75px;
+	h1 {
+		font-size: 150px;
+		line-height: 127.5px;
 	}
 
 	h2 {
-		font-size: 33px;
-		line-height: 24.75px;
+		font-size: 100px;
+		line-height: 85px;
 	}
 }
 
 @media screen and (max-width: 1315px) {
-	.title {
-		font-size: 55px;
-		line-height: 41.25px;
+	h1 {
+		font-size: 100px;
+		line-height: 85px;
 	}
 
 	h2 {
-		font-size: 18.5px;
-		line-height: 13.875px;
+		font-size: 55px;
+		line-height: 46.75px;
 	}
 
 	#login-button {
@@ -209,22 +193,33 @@ video {
 	}
 }
 
-@media screen and (max-width: 815px) {
-	.title {
-		margin-top: $toolbar-height-mobile;
-	}
-}
-
 @media screen and (max-width: 655px) {
 	h1 {
-		font-size: 45px;
-		line-height: 33.75px;
+		font-size: 70px;
+		line-height: 59.5px;
+	}
+
+	h2 {
+		font-size: 43px;
+		line-height: 38.25px;
 	}
 }
 
-@media screen and (max-width: 463px) {
-	h2 {
-		font-size: 16px;
-		line-height: 12px;
-	}
+.r {
+	color: rgb(233, 41, 54);
 }
+
+.g {
+	color: rgb(45, 155, 92);
+}
+
+.b {
+	color: rgb(0, 131, 197);
+}
+
+// @media screen and (max-width: 463px) {
+// 	h1 {
+// 		font-size: 16px;
+// 		line-height: 12px;
+// 	}
+// }

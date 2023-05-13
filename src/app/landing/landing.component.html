@@ -2,98 +2,98 @@
 <app-toolbar #toolbar></app-toolbar>
 <div class="curtain" #curtain>
 	<!-- Title -->
-	<div #titleContainer class="container">
-		<h1 #title class="title">WE'RE BACK... <br />CAN WE TALK?</h1>
+	<div #titleContainer class="text-container">
+		<h2 #title class="title">WE'RE BACK... <br />CAN WE TALK?</h2>
 	</div>
 
 	<!-- Logo -->
 	<div #logo class="logo-container">
-		<img src="assets/enron_logo_gradient.png" class="logo" />
+		<img src="assets/logo.gif" class="logo" />
 	</div>
 
+	<div class="spacer"></div>
+
 	<!-- Subtitle -->
-	<div class="text-container under-logo">
-		<h2 class="subtitle" [innerHTML]="subtitleContent" #subtitle></h2>
+	<div class="subtitle-container" #vCenterTop>
+		<h2 class="subtitle" #subtitle>
+			ENRON IS COMMITTED TO SHOWING YOU WHY WE DESERVE A SECOND CHANCE.
+		</h2>
 	</div>
 
 	<!-- Tweet Header -->
-	<div class="text-container sticky-v-center">
+	<div class="subtitle-container" #vCenterTop>
 		<h2 class="subtitle tweet-header" #tweetHeader>
-			We know it’s not going to be easy…
+			WE KNOW ITS NOT GOING TO BE EASY
 		</h2>
 	</div>
 </div>
 
-<!-- Light section -->
-<div class="main-container" #main>
-	<div class="container we-hear-you">
-		<div class="vertical-center">
-			<h1>WE HEAR YOU.</h1>
-			<div class="container">
-				<video width="1000" controls="controls" #video>
-					<source
-						src="https://storage.googleapis.com/enron-cdn/ceo.webm"
-					/>
-				</video>
-			</div>
-		</div>
-	</div>
+<div style="height: 50vh"></div>
+
+<!-- Light section-->
+<div class="subtitle-container" mode="light" #vCenterBottom>
+	<h1 style="text-align: center">
+		<span class="r">WE </span>
+		<span class="g">HEAR </span>
+		<span class="b">YOU.</span>
+	</h1>
 </div>
 
-<div class="commitments-container" mode="light">
-	<div class="container commitments">
-		<div>
-			<h3>Our company</h3>
-			<p>
-				We have implemented a strict no-shredder policy and Bill Clinton
-				tough on crime inspired reprocussions for employees caught with
-				one.
-			</p>
-		</div>
-		<div>
-			<h3>Who we are</h3>
-			<p>
-				We have implemented a strict no-shredder policy and Bill Clinton
-				tough on crime inspired reprocussions for employees caught with
-				one.
-			</p>
-		</div>
-		<div>
-			<h3>What we value</h3>
-			<p>
-				We have implemented a strict no-shredder policy and Bill Clinton
-				tough on crime inspired reprocussions for employees caught with
-				one.
-			</p>
-		</div>
-		<div>
-			<h3>Contact us</h3>
-			<p>
-				We have implemented a strict no-shredder policy and Bill Clinton
-				tough on crime inspired reprocussions for employees caught with
-				one.
-			</p>
-		</div>
+<div mode="light">
+	<div class="video-container">
+		<video width="1000" controls="controls" #video>
+			<source src="https://storage.googleapis.com/enron-cdn/ceo.webm" />
+		</video>
 	</div>
 
-	<div class="container we-need-you">
-		<div class="vertical-center">
-			<h1>WE NEED YOU.</h1>
-			<div class="container">
-				<div class="careers-box">
-					<div class="container">
-						<h2><i>Work for Enron</i></h2>
-					</div>
-					<div class="container">
-						<a href="#" class="button"><b>Apply</b></a>
+	<div class="commitments-container" mode="light">
+		<div class="container commitments">
+			<div>
+				<h3>Who we are</h3>
+				<p>
+					We have implemented a strict no-shredder policy and Bill
+					Clinton tough on crime inspired reprocussions for employees
+					caught with one.
+				</p>
+			</div>
+			<div>
+				<h3>What we value</h3>
+				<p>
+					We have implemented a strict no-shredder policy and Bill
+					Clinton tough on crime inspired reprocussions for employees
+					caught with one.
+				</p>
+			</div>
+			<div>
+				<h3>Where we're going</h3>
+				<p>
+					We have implemented a strict no-shredder policy and Bill
+					Clinton tough on crime inspired reprocussions for employees
+					caught with one.
+				</p>
+			</div>
+		</div>
+
+		<div class="container we-need-you">
+			<div class="vertical-center">
+				<h2>WE NEED YOU.</h2>
+				<div class="container">
+					<div class="careers-box">
+						<div class="container">
+							<h3><i>Work for Enron</i></h3>
+						</div>
+						<div class="container">
+							<a href="#" class="button"><b>Apply</b></a>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="container footer">
-		<p>&copy; 2023 Enron Enterprises</p>
+		<div class="spacer"></div>
+		<div class="container footer">
+			<p>&copy; 2023 Enron Enterprises</p>
+		</div>
 	</div>
 </div>
 

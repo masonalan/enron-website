@@ -21,10 +21,16 @@ export class AnimateService {
 	private _fadeIn = new Map<ElementRef, AnimationState>();
 	private _fadeOut = new Map<ElementRef, AnimationState>();
 
-	private _context!: AnimationContext;
+	private _context: AnimationContext = {
+		yCurr: 0,
+		yPrev: 0,
+		initAnims: false,
+	};
 
-	setContext(context: AnimationContext) {
-		this._context = context;
+	setContext(yCurr: number, initAnims: boolean) {
+		this._context.yPrev = this._context.yCurr;
+		this._context.yCurr = yCurr;
+		this._context.initAnims = initAnims;
 	}
 
 	posLinearFn(threshold: number, duration = this.FADE_DURATION) {

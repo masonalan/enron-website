@@ -7,4 +7,12 @@ $transition-time: 0.3s;
 	display: flex;
 	justify-content: center;
 	width: 100%;
+	box-sizing: border-box;
+}
+
+.text-container {
+	@extend .container;
+
+	padding-left: 30px;
+	padding-right: 30px;
 }
