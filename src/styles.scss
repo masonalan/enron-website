@@ -18,6 +18,34 @@
 	src: url("assets/Chirp-Bold.woff2");
 }
 
+@font-face {
+	font-family: "ObjectSans";
+	src: url("assets/PPObjectSans-Heavy.otf");
+	font-weight: 730;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "ObjectSans";
+	src: url("assets/PPObjectSans-HeavySlanted.otf");
+	font-weight: 730;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: "ObjectSans";
+	src: url("assets/PPObjectSans-Regular.otf");
+	font-weight: 315;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "ObjectSans";
+	src: url("assets/PPObjectSans-Slanted.otf");
+	font-weight: 315;
+	font-style: italic;
+}
+
 /**
  * Layout
  */
@@ -87,6 +115,15 @@ body {
 	}
 }
 
+a {
+	color: #555;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
 /**
  * Text
  */
@@ -99,6 +136,7 @@ h1 {
 h2 {
 	font-size: 150px;
 	line-height: 127.5px;
+	font-weight: 730;
 }
 
 h3 {
@@ -112,7 +150,8 @@ h4 {
 }
 
 p {
-	font-family: Arial;
+	font-family: ObjectSans;
+	font-weight: 315;
 }
 
 .curtain {
