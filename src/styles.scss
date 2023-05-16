@@ -137,6 +137,7 @@ h2 {
 	font-size: 150px;
 	line-height: 127.5px;
 	font-weight: 730;
+	width: max-content;
 }
 
 h3 {
@@ -152,6 +153,24 @@ h4 {
 p {
 	font-family: ObjectSans;
 	font-weight: 315;
+}
+
+.bordered {
+	border-top: 10px solid $palette-red;
+	border-left: 10px solid $palette-red;
+	border-spacing: 15px;
+	padding-left: 20px;
+	padding-top: 20px;
+}
+
+.bordered-g {
+	@extend .bordered;
+	border-color: $palette-green;
+}
+
+.bordered-b {
+	@extend .bordered;
+	border-color: $palette-blue;
 }
 
 .curtain {
@@ -254,13 +273,13 @@ video {
 }
 
 .r {
-	color: rgb(233, 41, 54);
+	color: $palette-red;
 }
 
 .g {
-	color: rgb(45, 155, 92);
+	color: $palette-green;
 }
 
 .b {
-	color: rgb(0, 131, 197);
+	color: $palette-blue;
 }
