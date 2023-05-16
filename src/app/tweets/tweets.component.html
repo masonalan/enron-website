@@ -7,7 +7,9 @@
 			<div class="tweet-header">
 				<div class="tweet-profile">
 					<a href="{{ tweet.url }}" target="_blank"
-						><div class="tweet-thumbnail">TM</div></a
+						><div class="tweet-thumbnail">
+							{{ tweet.initials }}
+						</div></a
 					>
 					<div class="vertical-center">
 						<a class="tweet-author" href="{{ tweet.url }}">{{
