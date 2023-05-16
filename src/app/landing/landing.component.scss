@@ -71,10 +71,21 @@
 	margin-top: 30px;
 }
 
+.video-block-container {
+	@extend .container;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
 .video-container {
 	@extend .container;
 	padding-left: 30px;
 	padding-right: 30px;
+	width: auto;
+}
+
+.ceo-container {
+	max-width: 450px;
 }
 
 @media screen and (max-width: 815px) {
@@ -90,6 +101,20 @@
 
 	.careers-box {
 		width: 100%;
+	}
+}
+
+@media screen and (max-width: 1350px) {
+	.video-block-container {
+		flex-direction: column-reverse;
+	}
+
+	.ceo-container {
+		max-width: 100%;
+
+		h3 {
+			text-align: center;
+		}
 	}
 }
 

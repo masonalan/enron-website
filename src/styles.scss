@@ -102,8 +102,13 @@ h2 {
 }
 
 h3 {
+	font-size: 70px;
+	line-height: 59.5px;
+}
+
+h4 {
 	font-size: 30px;
-	line-height: 21px;
+	line-height: 25.5px;
 }
 
 p {
@@ -131,6 +136,7 @@ p {
 
 video {
 	aspect-ratio: 16 / 9;
+	width: 100%;
 }
 
 *[mode="light"] {
@@ -143,6 +149,10 @@ video {
 	}
 
 	h3 {
+		color: black;
+	}
+
+	h4 {
 		color: black;
 	}
 
@@ -178,18 +188,17 @@ video {
 		line-height: 46.75px;
 	}
 
+	h3 {
+		font-size: 40px;
+		line-height: 34.5px;
+	}
+
 	#login-button {
 		display: none;
 	}
 
 	#mobile-menu {
 		display: flex;
-	}
-}
-
-@media screen and (max-width: 800px) {
-	video {
-		width: 100%;
 	}
 }
 
@@ -216,10 +225,3 @@ video {
 .b {
 	color: rgb(0, 131, 197);
 }
-
-// @media screen and (max-width: 463px) {
-// 	h1 {
-// 		font-size: 16px;
-// 		line-height: 12px;
-// 	}
-// }
