@@ -109,7 +109,7 @@ export class TweetsComponent implements AfterViewInit {
 			 */
 			const destRot =
 				(ti.col + 1) * 2 - 1 == ti.rowSize
-					? 3
+					? -7
 					: ti.col + 1 > ti.rowSize / 2
 					? 0
 					: -80;
@@ -125,14 +125,21 @@ export class TweetsComponent implements AfterViewInit {
 				ti.col * 50;
 			const dur = this.animate.FADE_DURATION * 2.5;
 			const currRot =
-				destRot +
-				(destRot < 0
-					? this.animate.posLinearFn(thresh, window.innerHeight * 2)
-					: this.animate.negLinearFn(
-							thresh,
-							window.innerHeight * 2
-					  )) *
-					80;
+				destRot !== -7
+					? destRot +
+					  (destRot < 0
+							? this.animate.posLinearFn(
+									thresh,
+									window.innerHeight * 2
+							  )
+							: this.animate.negLinearFn(
+									thresh,
+									window.innerHeight * 2
+							  )) *
+							80
+					: this.animate.posLinearFn(thresh, window.innerHeight * 2) *
+							14 +
+					  destRot;
 
 			/**
 			 * calculate current scale
