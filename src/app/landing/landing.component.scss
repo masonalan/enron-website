@@ -6,6 +6,7 @@
 
 .logo {
 	width: 70%;
+	max-width: 1000px;
 }
 
 .logo-container {
@@ -36,7 +37,7 @@
 .subtitle {
 	opacity: 0;
 	z-index: 3;
-	margin: 0;
+	// margin: 0;
 }
 
 .color-logo {
@@ -115,12 +116,6 @@
 		h3 {
 			text-align: center;
 		}
-	}
-}
-
-@media screen and (min-width: 1740px) {
-	.logo {
-		width: 1217.3px;
 	}
 }
 

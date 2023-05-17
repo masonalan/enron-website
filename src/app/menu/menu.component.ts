@@ -11,7 +11,6 @@ export class MenuComponent {
 	@ViewChild("menu") menu!: ElementRef;
 
 	toggle() {
-		console.log("krank");
 		this.menu.nativeElement.style.left = this._showing
 			? `${window.innerWidth}px`
 			: 0;

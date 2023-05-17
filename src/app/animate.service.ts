@@ -70,8 +70,6 @@ export class AnimateService {
 	) {
 		const set = () => {
 			elem.nativeElement.style.opacity = fadeFn(t, d);
-			console.log(elem);
-			console.log(fadeFn(t, d));
 		};
 
 		if (this._context.yCurr >= t && this._context.yCurr <= t + d) {
@@ -121,7 +119,6 @@ export class AnimateService {
 	fadeOut(elem: ElementRef, t: number, d = this.FADE_DURATION) {
 		let state = this._fadeOut.get(elem);
 		state = this.fade(elem, state, t, d, (t: number, d: number) => {
-			console.log("p:" + this.negLinearFn(t, d));
 			return this.negLinearFn(t, d);
 		});
 		this._fadeOut.set(elem, state!);

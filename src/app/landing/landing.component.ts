@@ -34,6 +34,7 @@ export class LandingComponent implements AfterViewInit {
 	@ViewChild("commitments") commitments!: ElementRef;
 	@ViewChild("main") main!: ElementRef;
 	@ViewChild("video") video!: ElementRef;
+	@ViewChild("spacer") spacer!: ElementRef;
 	@ViewChildren("vCenterTop") vCenterTops!: QueryList<ElementRef>;
 	@ViewChildren("vCenterBottom") vCenterBottoms!: QueryList<ElementRef>;
 
@@ -94,22 +95,35 @@ export class LandingComponent implements AfterViewInit {
 		this.animate.fadeOut(this.logo, logoFt, 100);
 
 		/**
-		 * fade in/out subtitle
+		 * scale threadhold fn
 		 */
-		const subtitleFt =
-			logoFt +
-			this.logo.nativeElement.offsetHeight -
-			window.innerHeight / 2 +
-			this.animate.FADE_DURATION;
-		this.animate.fadeIn(this.subtitle, 0);
-		this.animate.fadeOut(this.subtitle, subtitleFt);
+		const scaleThresh = (offsetTop: number) => {
+			return (
+				offsetTop -
+				window.innerHeight * 0.65 -
+				this.animate.FADE_DURATION
+			);
+		};
 
 		/**
-		 * animate scale on subtitle
+		 * fade & scale subtitle 1
 		 */
-		this.subtitle.nativeElement.style.transform = `scale(${this.animate.posLinearFn(
-			0
-		)})`;
+		const subtitle1St = scaleThresh(this.subtitle.nativeElement.offsetTop);
+		this.animate.fadeIn(this.subtitle, subtitle1St);
+		this.subtitle.nativeElement.style.transform = `scale(${
+			this.animate.posLinearFn(subtitle1St) * 0.5 + 0.5
+		})`;
+
+		/**
+		 * animate subtitle 2
+		 */
+		const subtitle2St = scaleThresh(
+			this.tweetHeader.nativeElement.parentElement.offsetTop
+		);
+		this.animate.fadeIn(this.tweetHeader, subtitle2St);
+		this.tweetHeader.nativeElement.style.transform = `scale(${
+			this.animate.posLinearFn(subtitle2St) * 0.5 + 0.5
+		})`;
 
 		/**
 		 * make sure subtitle & tweet header stick at vertical center
@@ -126,43 +140,37 @@ export class LandingComponent implements AfterViewInit {
 		});
 
 		/**
-		 * fade in out tweet header
+		 * update the height of the spacer to account for tweets
 		 */
-		this.animate.fadeIn(
-			this.tweetHeader,
-			subtitleFt + this.animate.FADE_DURATION / 2
-		);
+		this.spacer.nativeElement.style.height = `${
+			(window.innerHeight - this.tweetHeader.nativeElement.offsetHeight) /
+				2 +
+			this.tweets.height()
+		}px`;
 
 		/**
-		 * update the height of the curtain to include the tweets
+		 * set the top of the tweets
 		 */
-		const curtainHeight =
-			subtitleFt +
-			this.animate.FADE_DURATION +
-			window.innerHeight +
-			this.tweets.height();
-		this.curtain.nativeElement.style.height = `${curtainHeight}px`;
-		this.tweets.setTop(curtainHeight - this.tweets.height());
+		this.tweets.setTop(
+			this.curtain.nativeElement.offsetHeight - this.tweets.height()
+		);
 
 		/**
 		 * animate tweets & toolbar
 		 */
-		this.toolbar.handleScroll(curtainHeight, logoFt + 50);
+		this.toolbar.handleScroll(
+			this.curtain.nativeElement.offsetHeight,
+			logoFt + 50
+		);
 		this.tweets.handleScroll();
 
 		/**
-		 * hide main container so that if we scroll < 0 on chrome it won't show
+		 * fade out subtitle 2
 		 */
-		// this.animate.setAt(
-		// 	this.main,
-		// 	window.innerHeight,
-		// 	(e: any) => {
-		// 		e.style.opacity = 0;
-		// 	},
-		// 	(e: any) => {
-		// 		e.style.opacity = 1;
-		// 	}
-		// );
+		this.animate.fadeOut(
+			this.tweetHeader,
+			this.curtain.nativeElement.offsetHeight - window.innerHeight - 30
+		);
 
 		/**
 		 * animate scale & opacity on video
