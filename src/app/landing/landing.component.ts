@@ -175,9 +175,13 @@ export class LandingComponent implements AfterViewInit {
 		/**
 		 * animate scale & opacity on video
 		 */
-		this.video.nativeElement.style.transform = `scale(${this.animate.posLinearFn(
-			this.curtain.nativeElement.offsetHeight - 100
-		)})`;
+		this.video.nativeElement.style.transform = `scale(${
+			this.animate.posLinearFn(
+				this.curtain.nativeElement.offsetHeight - 100
+			) *
+				0.5 +
+			0.5
+		})`;
 		this.video.nativeElement.style.opacity = this.animate.posLinearFn(
 			this.curtain.nativeElement.offsetHeight
 		);

@@ -157,21 +157,29 @@ p {
 	font-weight: 315;
 }
 
-.bordered {
-	border-top: 10px solid $palette-red;
-	border-left: 10px solid $palette-red;
-	border-spacing: 15px;
+.border-top-left {
+	border-top: 10px solid;
+	border-left: 10px solid;
 	padding-left: 20px;
 	padding-top: 20px;
+	width: fit-content;
 }
 
-.bordered-g {
-	@extend .bordered;
+.border-bottom {
+	border-bottom: 10px solid;
+	padding-bottom: 20px;
+	width: fit-content;
+}
+
+.border-color-red {
+	border-color: $palette-red;
+}
+
+.border-color-green {
 	border-color: $palette-green;
 }
 
-.bordered-b {
-	@extend .bordered;
+.border-color-blue {
 	border-color: $palette-blue;
 }
 
