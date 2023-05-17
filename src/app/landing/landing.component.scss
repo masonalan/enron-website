@@ -49,6 +49,20 @@
 	height: 100%;
 }
 
+.work-container {
+	@extend .container;
+	background-image: url("../../assets/work.gif");
+	background-size: cover;
+}
+
+.work {
+	max-width: 600px;
+	padding-top: 200px;
+	padding-bottom: 200px;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
 .commitments-container {
 	padding: 30px;
 	background-color: white;
@@ -61,7 +75,7 @@
 }
 
 .careers-box {
-	border: 2px solid black;
+	// border: 2px solid black;
 	display: flex;
 	flex-direction: column;
 	padding-bottom: 30px;
@@ -106,7 +120,8 @@
 }
 
 @media screen and (max-width: 1350px) {
-	.video-block-container {
+	.video-block-container,
+	.work-container {
 		flex-direction: column-reverse;
 	}
 
