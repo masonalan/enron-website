@@ -70,7 +70,8 @@
 
 .commitments {
 	div {
-		padding: 15px;
+		padding-top: 15px;
+		padding-bottom: 15px;
 	}
 }
 
@@ -94,13 +95,12 @@
 
 .video-container {
 	@extend .container;
-	padding-left: 30px;
-	padding-right: 30px;
-	width: auto;
+	// width: auto;
 }
 
 .ceo-container {
 	max-width: 450px;
+	padding-right: 60px;
 }
 
 @media screen and (max-width: 815px) {
@@ -127,6 +127,7 @@
 
 	.ceo-container {
 		max-width: 100%;
+		padding-right: 0;
 
 		h3 {
 			text-align: center;
