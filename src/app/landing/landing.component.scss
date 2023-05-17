@@ -103,6 +103,30 @@
 	padding-right: 60px;
 }
 
+.footer-border {
+	height: 5px;
+	width: 100%;
+}
+
+.footer {
+	p {
+		color: #555;
+		font-size: 14px;
+		padding-top: 30px;
+		padding-bottom: 30px;
+	}
+
+	a:first-of-type:hover {
+		text-decoration: none;
+	}
+
+	a {
+		padding-left: 10px;
+		padding-right: 10px;
+		white-space: nowrap;
+	}
+}
+
 @media screen and (max-width: 815px) {
 	.logo-container {
 		top: $toolbar-height-mobile;
