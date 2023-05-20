@@ -150,6 +150,7 @@ h3 {
 h4 {
 	font-size: 30px;
 	line-height: 25.5px;
+	margin: 0;
 }
 
 p {
@@ -199,6 +200,11 @@ p {
 	background: black;
 	z-index: 1;
 	position: relative;
+}
+
+.no-scroll {
+	height: 100%;
+	overflow-y: hidden;
 }
 
 #login-button {

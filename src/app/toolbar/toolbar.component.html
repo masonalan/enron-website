@@ -1,5 +1,4 @@
 <div #toolbar class="toolbar modeable">
-    <app-menu #menu></app-menu>
     <div class="toolbar-bg" #toolbarBg></div>
     <div #line class="toolbar-line"></div>
     <div class="toolbar-edge-left">
@@ -20,18 +19,10 @@
         <div id="login-button" class="vertical-center">
             <a href="#" class="button"><i>my</i><b>Enron</b></a>
         </div>
-        <a id="mobile-menu" (click)="toggleMenu()"
-            ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
-                fill="#fff"
-                viewBox="0 0 256 256"
-            >
-                <path
-                    d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"
-                    #path
-                ></path></svg
-        ></a>
+        <a id="mobile-menu" (click)="toggleMenu()">
+            <i class="fa-solid fa-bars icon-show-menu"></i>
+            <i class="fa-solid fa-xmark icon-hide-menu"></i>
+        </a>
     </div>
 </div>
+<app-menu #menu></app-menu>

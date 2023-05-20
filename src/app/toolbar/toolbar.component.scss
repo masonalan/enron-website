@@ -9,6 +9,7 @@
 	justify-content: center;
 	z-index: 20;
 	border-bottom: 2px solid transparent;
+	transition: background 0.25s ease-in;
 
 	a {
 		vertical-align: middle;
@@ -89,6 +90,32 @@
 	transition: color $transition-time;
 }
 
+.icon-show-menu {
+	font-size: 15px;
+	opacity: 1;
+	transition: all 0.25s ease-in;
+}
+
+.icon-hide-menu {
+	font-size: 15px;
+	margin-top: -15px;
+	opacity: 0;
+	transform: rotate(-180deg);
+	transition: all 0.25s ease-in;
+}
+
+.showing-menu {
+	.icon-show-menu {
+		opacity: 0;
+		transform: rotate(180deg);
+	}
+
+	.icon-hide-menu {
+		opacity: 1;
+		transform: rotate(0deg);
+	}
+}
+
 path {
 	fill: white;
 }
@@ -100,6 +127,7 @@ path:after {
 
 #mobile-menu {
 	z-index: 31;
+	cursor: pointer;
 }
 
 @media screen and (max-width: 900px) {
@@ -121,7 +149,7 @@ path:after {
 		height: $toolbar-height-mobile;
 
 		img {
-			width: 42px;
+			width: 30px;
 		}
 	}
 
