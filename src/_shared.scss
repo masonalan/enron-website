@@ -3,6 +3,7 @@
  * Animation
  *
  */
+
 $fade-duration: 300px;
 $transition-time: 0.3s;
 
@@ -11,6 +12,7 @@ $transition-time: 0.3s;
  * Toolbar
  *
  */
+
 $toolbar-height: 125px;
 $toolbar-height-mobile: 75px;
 
@@ -19,6 +21,7 @@ $toolbar-height-mobile: 75px;
  * Theme
  *
  */
+
 $palette-red: rgb(233, 41, 54);
 $palette-green: rgb(45, 155, 92);
 $palette-blue: rgb(0, 131, 197);
@@ -28,6 +31,7 @@ $palette-blue: rgb(0, 131, 197);
  * Text
  *
  */
+
 $line-height-factor: 0.85;
 
 /**
@@ -35,6 +39,7 @@ $line-height-factor: 0.85;
  * Responsiveness
  *
  */
+
 $title-shop-collision-1: 1809px; // when the title (h2) gets to close to the shop menu
 $title-shop-collision-2: 1395px;
 $tri-column-collision: 1200px; // when the three columns under the ceo video become too close together

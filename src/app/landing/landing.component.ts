@@ -5,20 +5,21 @@ import {
 	QueryList,
 	ViewChild,
 	ViewChildren,
-	AfterViewInit,
+	Renderer2,
 } from "@angular/core";
 
 import { ToolbarComponent } from "../toolbar/toolbar.component";
 import { TweetsComponent } from "../tweets/tweets.component";
 
 import { AnimateService } from "../animate.service";
+import { ThemeService, Theme } from "../theme.service";
 
 @Component({
 	selector: "app-landing",
 	templateUrl: "./landing.component.html",
 	styleUrls: ["./landing.component.scss"],
 })
-export class LandingComponent implements AfterViewInit {
+export class LandingComponent {
 	yCurr = 0;
 	subtitleContent =
 		"Enron is committed to showing you<br />why we deserve a second chance.";
@@ -38,48 +39,11 @@ export class LandingComponent implements AfterViewInit {
 	@ViewChildren("vCenterTop") vCenterTops!: QueryList<ElementRef>;
 	@ViewChildren("vCenterBottom") vCenterBottoms!: QueryList<ElementRef>;
 
-	/*
-	 * whether or not there is a scheduled animation frame
-	 */
-	_saf = false;
-
-	/**
-	 * whether or not the scroll event is the first
-	 */
-	_isFirstScroll = true;
-
-	ngAfterViewInit() {
-		this.refresh();
-	}
-
-	@HostListener("window:resize", ["$event"])
-	onResize(event: Event) {
-		this.refresh();
-	}
-
-	@HostListener("window:scroll", ["$event"])
-	onScroll(event: Event) {
-		if (this._saf) return;
-
-		this._saf = true;
-
-		requestAnimationFrame(() => {
-			this.refresh(this._isFirstScroll);
-			this._isFirstScroll = false;
-			this._saf = false;
-		});
-	}
-
 	isMobile() {
-		return window.innerWidth <= 815;
+		return window.innerWidth <= 920;
 	}
 
-	refresh(initAnims: boolean = false) {
-		/**
-		 * update scroll state & set up animations
-		 */
-		this.animate.setContext(window.pageYOffset, initAnims);
-
+	onScroll() {
 		if (window.pageYOffset < 500) {
 			document.body.style.background = "black";
 		} else {
@@ -164,11 +128,32 @@ export class LandingComponent implements AfterViewInit {
 		/**
 		 * animate tweets & toolbar
 		 */
-		this.toolbar.handleScroll(
-			this.curtain.nativeElement.offsetHeight,
-			logoFt + 50
+		// this.toolbar.handleScroll(
+		// 	this.curtain.nativeElement.offsetHeight,
+		// 	logoFt + 50
+		// );
+
+		this.theme.set(
+			window.pageYOffset > this.curtain.nativeElement.offsetHeight
+				? Theme.Light
+				: Theme.Dark
 		);
-		this.tweets.handleScroll();
+
+		// this.renderer.setAttribute(
+		// 	document.body,
+		// 	"mode",
+		// 	window.pageYOffset > this.curtain.nativeElement.offsetHeight
+		// 		? "light"
+		// 		: "dark"
+		// );
+		// this.renderer.setAttribute(
+		// 	document.querySelector(".toolbar"),
+		// 	"mode",
+		// 	window.pageYOffset > this.curtain.nativeElement.offsetHeight
+		// 		? "light"
+		// 		: "dark"
+		// );
+		// this.tweets.handleScroll();
 
 		/**
 		 * fade out subtitle 2
@@ -193,5 +178,11 @@ export class LandingComponent implements AfterViewInit {
 		);
 	}
 
-	constructor(private animate: AnimateService) {}
+	constructor(
+		private animate: AnimateService,
+		private theme: ThemeService,
+		private renderer: Renderer2
+	) {
+		this.animate.registerScrollCallback(() => this.onScroll());
+	}
 }

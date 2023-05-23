@@ -1,11 +1,4 @@
 import { Injectable, ElementRef } from "@angular/core";
-
-export type AnimationContext = {
-	yCurr: number;
-	yPrev: number;
-	initAnims: boolean;
-};
-
 export enum AnimationState {
 	Pre,
 	Active,
@@ -18,23 +11,35 @@ export enum AnimationState {
 export class AnimateService {
 	FADE_DURATION = 300;
 
+	private _isInit = false;
+	private _width = 0;
+	private _yCurr = 0;
+	private _yPrev = 0;
+
+	private _callbacks: any[] = [];
+
 	private _fadeIn = new Map<ElementRef, AnimationState>();
 	private _fadeOut = new Map<ElementRef, AnimationState>();
 
-	private _context: AnimationContext = {
-		yCurr: 0,
-		yPrev: 0,
-		initAnims: false,
-	};
+	notifyResize(width: number) {
+		this._width = width;
+	}
 
-	setContext(yCurr: number, initAnims: boolean) {
-		this._context.yPrev = this._context.yCurr;
-		this._context.yCurr = yCurr;
-		this._context.initAnims = initAnims;
+	notifyScroll(yCurr: number) {
+		this._yPrev = this._yCurr;
+		this._yCurr = yCurr;
+
+		this._callbacks.forEach((fn) => fn());
+
+		this._isInit = true;
+	}
+
+	registerScrollCallback(callback: any) {
+		this._callbacks.push(callback);
 	}
 
 	posLinearFn(threshold: number, duration = this.FADE_DURATION) {
-		const v = (this._context.yCurr - threshold) / duration;
+		const v = (this._yCurr - threshold) / duration;
 		if (v < 0) {
 			return 0;
 		} else if (v > 1) {
@@ -48,15 +53,9 @@ export class AnimateService {
 	}
 
 	setAt(elem: ElementRef, t: number, beforeFn: any, afterFn: any) {
-		if (
-			this._context.yCurr >= t &&
-			(this._context.yPrev < t || this._context.initAnims)
-		) {
+		if (this._yCurr >= t && (this._yPrev < t || !this._isInit)) {
 			afterFn(elem.nativeElement);
-		} else if (
-			this._context.yCurr < t &&
-			(this._context.yPrev >= t || this._context.initAnims)
-		) {
+		} else if (this._yCurr < t && (this._yPrev >= t || !this._isInit)) {
 			beforeFn(elem.nativeElement);
 		}
 	}
@@ -72,21 +71,18 @@ export class AnimateService {
 			elem.nativeElement.style.opacity = fadeFn(t, d);
 		};
 
-		if (this._context.yCurr >= t && this._context.yCurr <= t + d) {
+		if (this._yCurr >= t && this._yCurr <= t + d) {
 			/**
 			 *yCurr is within anim range
 			 */
 			set();
 			return AnimationState.Active;
-		} else if (this._context.yCurr < t) {
+		} else if (this._yCurr < t) {
 			/**
 			 * yCurr is above anim range
 			 * set to final value and stop animation
 			 */
-			if (
-				state === AnimationState.Active ||
-				this._context.yPrev > t + d
-			) {
+			if (state === AnimationState.Active || this._yPrev > t + d) {
 				set();
 			}
 			return AnimationState.Pre;
@@ -95,7 +91,7 @@ export class AnimateService {
 			 * yCurr is below anim range
 			 * set to final value and stop animation
 			 */
-			if (state === AnimationState.Active || this._context.yPrev < t) {
+			if (state === AnimationState.Active || this._yPrev < t) {
 				set();
 			}
 			return AnimationState.Post;

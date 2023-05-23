@@ -57,11 +57,8 @@ export class TweetsComponent implements AfterViewInit {
 		return this._height;
 	}
 
-	/**
-	 * restructure tweets based on window width
-	 */
 	@HostListener("window:resize", ["$event"])
-	reStructure() {
+	onResize() {
 		/**
 		 * create tweet structure
 		 */
@@ -93,7 +90,7 @@ export class TweetsComponent implements AfterViewInit {
 				.top;
 	}
 
-	handleScroll() {
+	onScroll() {
 		/**
 		 * tweet animations
 		 */
@@ -160,10 +157,11 @@ export class TweetsComponent implements AfterViewInit {
 	}
 
 	ngAfterViewInit() {
-		this.reStructure();
+		this.onResize();
 	}
 
 	constructor(private animate: AnimateService) {
-		this.reStructure();
+		this.onResize();
+		this.animate.registerScrollCallback(() => this.onScroll());
 	}
 }

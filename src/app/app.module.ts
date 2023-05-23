@@ -7,7 +7,7 @@ import { AppComponent } from "./app.component";
 import { TweetsComponent } from "./tweets/tweets.component";
 import { ToolbarComponent } from "./toolbar/toolbar.component";
 import { LandingComponent } from "./landing/landing.component";
-import { MenuComponent } from './menu/menu.component';
+import { MenuComponent } from "./menu/menu.component";
 
 @NgModule({
 	declarations: [
@@ -15,7 +15,7 @@ import { MenuComponent } from './menu/menu.component';
 		TweetsComponent,
 		ToolbarComponent,
 		LandingComponent,
-  MenuComponent,
+		MenuComponent,
 	],
 	imports: [
 		BrowserModule,

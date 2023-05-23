@@ -1,15 +1,22 @@
-import { Component, ViewChild, ElementRef, Renderer2 } from "@angular/core";
+import {
+	Component,
+	ViewChild,
+	ElementRef,
+	Renderer2,
+	AfterViewInit,
+} from "@angular/core";
 
 import { MenuComponent } from "../menu/menu.component";
 
 import { AnimateService } from "../animate.service";
+import { ThemeService } from "../theme.service";
 
 @Component({
 	selector: "app-toolbar",
 	templateUrl: "./toolbar.component.html",
 	styleUrls: ["./toolbar.component.scss"],
 })
-export class ToolbarComponent {
+export class ToolbarComponent implements AfterViewInit {
 	@ViewChild("toolbar") toolbar!: ElementRef;
 	@ViewChild("toolbarBg") toolbarBg!: ElementRef;
 	@ViewChild("links") links!: ElementRef;
@@ -20,28 +27,30 @@ export class ToolbarComponent {
 	_showingMenu = false;
 	_lineOpacity = 0;
 
-	handleScroll(curtainHeight: number, ft: number) {
+	ngAfterViewInit() {
+		this.theme.registerThemedElement(this.toolbar);
+	}
+
+	onScroll() {
+		// TODO: Refactor
+		let ft = (() => {
+			if (window.pageYOffset > 1809) {
+				return 410;
+			} else if (window.pageYOffset > 1395) {
+				return 283;
+			} else if (window.pageYOffset > 920) {
+				return 207;
+			} else {
+				return 142;
+			}
+			return 0;
+		})();
+
 		/**
 		 * fade in toolbar
 		 */
 		this.animate.fadeIn(this.links, ft);
 		this.animate.fadeIn(this.line, ft);
-
-		/**
-		 * fade in menu bar
-		 */
-		this.animate.setAt(
-			this.toolbar,
-			curtainHeight,
-			(e: any) => {
-				e.setAttribute("mode", "dark");
-				this.menu.toggleMode("dark");
-			},
-			(e: any) => {
-				e.setAttribute("mode", "light");
-				this.menu.toggleMode("light");
-			}
-		);
 
 		/**
 		 * update the bg color of the toolbar
@@ -89,5 +98,11 @@ export class ToolbarComponent {
 		this.menu.toggle(this._showingMenu);
 	}
 
-	constructor(private animate: AnimateService, private renderer: Renderer2) {}
+	constructor(
+		private animate: AnimateService,
+		private theme: ThemeService,
+		private renderer: Renderer2
+	) {
+		this.animate.registerScrollCallback(() => this.onScroll());
+	}
 }
