@@ -132,6 +132,7 @@ path:after {
 #mobile-menu {
 	z-index: 31;
 	cursor: pointer;
+	display: none;
 }
 
 @media screen and (max-width: $title-shop-collision-2) {
