@@ -1,5 +1,16 @@
 @import "../../shared";
 
+.curtain {
+	background: black;
+	z-index: 1;
+	position: relative;
+}
+
+video {
+	aspect-ratio: 16 / 9;
+	width: 100%;
+}
+
 /**
  * Logo
  */
@@ -127,7 +138,7 @@
 	}
 }
 
-@media screen and (max-width: $mobile-toolbar-threshold) {
+@media screen and (max-width: $title-shop-collision-3) {
 	.logo-container {
 		top: $toolbar-height-mobile;
 	}
@@ -143,7 +154,7 @@
 	}
 }
 
-@media screen and (max-width: 1350px) {
+@media screen and (max-width: $title-shop-collision-2) {
 	.video-block-container,
 	.work-container {
 		flex-direction: column-reverse;
@@ -159,7 +170,7 @@
 	}
 }
 
-@media screen and (max-width: 815px) {
+@media screen and (max-width: $title-shop-collision-3) {
 	.title {
 		margin-top: $toolbar-height-mobile;
 	}

@@ -73,6 +73,10 @@
 	opacity: 0;
 }
 
+.toolbar-center > a {
+	display: flex;
+}
+
 .toolbar-line {
 	position: absolute;
 	bottom: 0px;
@@ -130,7 +134,7 @@ path:after {
 	cursor: pointer;
 }
 
-@media screen and (max-width: $mobile-toolbar-threshold) {
+@media screen and (max-width: $title-shop-collision-2) {
 	.toolbar-center > a {
 		display: none;
 	}
@@ -144,7 +148,7 @@ path:after {
 	}
 }
 
-@media screen and (max-width: $mobile-toolbar-threshold) {
+@media screen and (max-width: $title-shop-collision-2) {
 	.toolbar {
 		height: $toolbar-height-mobile;
 
