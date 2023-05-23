@@ -80,7 +80,7 @@ export class LandingComponent implements AfterViewInit {
 		 */
 		this.animate.setContext(window.pageYOffset, initAnims);
 
-		if (window.pageYOffset < 100) {
+		if (window.pageYOffset < 500) {
 			document.body.style.background = "black";
 		} else {
 			document.body.style.background = "white";

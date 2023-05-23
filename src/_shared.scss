@@ -7,6 +7,8 @@ $palette-red: rgb(233, 41, 54);
 $palette-green: rgb(45, 155, 92);
 $palette-blue: rgb(0, 131, 197);
 
+$mobile-toolbar-threshold: 1025px;
+
 .container {
 	display: flex;
 	justify-content: center;

@@ -130,7 +130,7 @@ path:after {
 	cursor: pointer;
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: $mobile-toolbar-threshold) {
 	.toolbar-center > a {
 		display: none;
 	}
@@ -144,7 +144,7 @@ path:after {
 	}
 }
 
-@media screen and (max-width: 815px) {
+@media screen and (max-width: $mobile-toolbar-threshold) {
 	.toolbar {
 		height: $toolbar-height-mobile;
 

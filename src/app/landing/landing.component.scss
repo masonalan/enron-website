@@ -127,7 +127,7 @@
 	}
 }
 
-@media screen and (max-width: 815px) {
+@media screen and (max-width: $mobile-toolbar-threshold) {
 	.logo-container {
 		top: $toolbar-height-mobile;
 	}
