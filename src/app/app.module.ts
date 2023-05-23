@@ -8,6 +8,7 @@ import { TweetsComponent } from "./tweets/tweets.component";
 import { ToolbarComponent } from "./toolbar/toolbar.component";
 import { LandingComponent } from "./landing/landing.component";
 import { MenuComponent } from "./menu/menu.component";
+import { CareersComponent } from "./careers/careers.component";
 
 @NgModule({
 	declarations: [
@@ -16,13 +17,14 @@ import { MenuComponent } from "./menu/menu.component";
 		ToolbarComponent,
 		LandingComponent,
 		MenuComponent,
+		CareersComponent,
 	],
 	imports: [
 		BrowserModule,
 		AppRoutingModule,
 		RouterModule.forRoot([
 			{ path: "", component: LandingComponent },
-			{ path: "shop", component: ToolbarComponent },
+			{ path: "careers", component: CareersComponent },
 		]),
 	],
 	providers: [],

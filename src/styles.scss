@@ -72,6 +72,10 @@ body.no-scroll {
 	overflow-y: hidden;
 }
 
+body[mode="light"] {
+	background-color: white;
+}
+
 /**
  * ------------------------------------------------------------
  * Layout

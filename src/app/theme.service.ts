@@ -20,12 +20,10 @@ export class ThemeService {
 		this._currTheme = t;
 		this._isInit = true;
 
-		console.log("set theme" + t);
+		const themeStr = t == Theme.Light ? "light" : "dark";
+		document.body.setAttribute("mode", themeStr);
 		this._themedElements.forEach((e) =>
-			e.nativeElement.setAttribute(
-				"mode",
-				t == Theme.Light ? "light" : "dark"
-			)
+			e.nativeElement.setAttribute("mode", themeStr)
 		);
 	}
 

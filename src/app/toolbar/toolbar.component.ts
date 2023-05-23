@@ -6,6 +6,8 @@ import {
 	AfterViewInit,
 } from "@angular/core";
 
+import { Router } from "@angular/router";
+
 import { MenuComponent } from "../menu/menu.component";
 
 import { AnimateService } from "../animate.service";
@@ -32,6 +34,12 @@ export class ToolbarComponent implements AfterViewInit {
 	}
 
 	onScroll() {
+		if (window.location.pathname !== "/") {
+			return;
+		}
+
+		console.log("smo");
+
 		// TODO: Refactor
 		let ft = (() => {
 			if (window.pageYOffset > 1809) {
@@ -101,7 +109,8 @@ export class ToolbarComponent implements AfterViewInit {
 	constructor(
 		private animate: AnimateService,
 		private theme: ThemeService,
-		private renderer: Renderer2
+		private renderer: Renderer2,
+		private router: Router
 	) {
 		this.animate.registerScrollCallback(() => this.onScroll());
 	}
