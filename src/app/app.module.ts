@@ -10,6 +10,7 @@ import { LandingComponent } from "./landing/landing.component";
 import { MenuComponent } from "./menu/menu.component";
 import { CareersComponent } from "./careers/careers.component";
 import { ShopComponent } from "./shop/shop.component";
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
 	declarations: [
@@ -20,6 +21,7 @@ import { ShopComponent } from "./shop/shop.component";
 		MenuComponent,
 		CareersComponent,
 		ShopComponent,
+  FooterComponent,
 	],
 	imports: [
 		BrowserModule,
