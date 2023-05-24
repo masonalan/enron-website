@@ -10,7 +10,8 @@ import { LandingComponent } from "./landing/landing.component";
 import { MenuComponent } from "./menu/menu.component";
 import { CareersComponent } from "./careers/careers.component";
 import { ShopComponent } from "./shop/shop.component";
-import { FooterComponent } from './footer/footer.component';
+import { FooterComponent } from "./footer/footer.component";
+import { ApplyComponent } from "./apply/apply.component";
 
 @NgModule({
 	declarations: [
@@ -21,7 +22,8 @@ import { FooterComponent } from './footer/footer.component';
 		MenuComponent,
 		CareersComponent,
 		ShopComponent,
-  FooterComponent,
+		FooterComponent,
+		ApplyComponent,
 	],
 	imports: [
 		BrowserModule,
@@ -30,6 +32,7 @@ import { FooterComponent } from './footer/footer.component';
 			{ path: "", component: LandingComponent },
 			{ path: "careers", component: CareersComponent },
 			{ path: "shop", component: ShopComponent },
+			{ path: "apply", component: ApplyComponent },
 		]),
 	],
 	providers: [],

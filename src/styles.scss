@@ -101,10 +101,34 @@ body[mode="light"] {
 }
 
 .page-container {
-	@extend .container;
+	display: flex;
+	flex-direction: column;
 	padding-top: $toolbar-height + 60px;
+}
+
+.content-section {
 	padding-left: 30px;
 	padding-right: 30px;
+	background-color: white;
+}
+
+.content-section[mode="dark"] {
+	background-color: black;
+}
+
+.info-content {
+	width: 60%;
+	max-width: 800px;
+}
+
+.info-text {
+	width: 600px;
+}
+
+.info-container {
+	@extend .container;
+	justify-content: space-around;
+	gap: 30px;
 }
 
 @media screen and (max-width: $tri-column-collision) {
@@ -140,9 +164,18 @@ body[mode="light"] {
 	margin-top: 5px;
 }
 
+.large-button {
+	@extend .button;
+	border: 5px solid white;
+	padding: 20px;
+	font-size: 30px;
+	font-weight: 730;
+	position: relative;
+}
+
 *[mode="light"] {
 	.button {
-		border: 2px solid black;
+		border-color: black;
 		color: black;
 	}
 
@@ -168,6 +201,25 @@ a {
 
 a:hover:not(.button) {
 	text-decoration: underline;
+}
+
+/**
+ * ------------------------------------------------------------
+ * Input
+ *
+ */
+
+input[type="text"],
+input[type="email"] {
+	border: 5px solid black;
+	padding: 20px;
+	font-size: 30px;
+	font-weight: 730;
+	margin-top: 10px;
+}
+
+label {
+	font-weight: 730;
 }
 
 /**
@@ -211,7 +263,8 @@ p {
 	h3,
 	h4,
 	h5,
-	p {
+	p,
+	label {
 		color: black;
 	}
 }
@@ -254,6 +307,11 @@ p {
 	h2 {
 		font-size: 43px;
 		line-height: 38.25px;
+	}
+
+	input[type="text"] {
+		font-size: inherit;
+		padding: 10px;
 	}
 }
 
