@@ -9,6 +9,7 @@ import { ToolbarComponent } from "./toolbar/toolbar.component";
 import { LandingComponent } from "./landing/landing.component";
 import { MenuComponent } from "./menu/menu.component";
 import { CareersComponent } from "./careers/careers.component";
+import { ShopComponent } from "./shop/shop.component";
 
 @NgModule({
 	declarations: [
@@ -18,6 +19,7 @@ import { CareersComponent } from "./careers/careers.component";
 		LandingComponent,
 		MenuComponent,
 		CareersComponent,
+		ShopComponent,
 	],
 	imports: [
 		BrowserModule,
@@ -25,6 +27,7 @@ import { CareersComponent } from "./careers/careers.component";
 		RouterModule.forRoot([
 			{ path: "", component: LandingComponent },
 			{ path: "careers", component: CareersComponent },
+			{ path: "shop", component: ShopComponent },
 		]),
 	],
 	providers: [],

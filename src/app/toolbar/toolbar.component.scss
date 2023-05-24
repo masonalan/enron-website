@@ -133,7 +133,7 @@ path:after {
 	display: none;
 }
 
-@media screen and (max-width: $title-shop-collision-2) {
+@media screen and (max-width: $title-shop-collision-3) {
 	.toolbar-center > a {
 		display: none;
 	}
@@ -145,9 +145,13 @@ path:after {
 	#mobile-menu {
 		display: flex;
 	}
+
+	.toolbar-edge:last-of-type {
+		padding-right: 0px;
+	}
 }
 
-@media screen and (max-width: $title-shop-collision-2) {
+@media screen and (max-width: $tri-column-collision) {
 	.toolbar {
 		height: $toolbar-height-mobile;
 
@@ -156,16 +160,16 @@ path:after {
 		}
 	}
 
+	.toolbar-center > a {
+		line-height: $toolbar-height-mobile;
+	}
+
 	.toolbar-line {
 		top: $toolbar-height-mobile;
 	}
 
 	.toolbar-edge:first-of-type {
 		padding-left: 0px;
-	}
-
-	.toolbar-edge:last-of-type {
-		padding-right: 0px;
 	}
 }
 
