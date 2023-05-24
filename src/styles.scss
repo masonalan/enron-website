@@ -96,6 +96,13 @@ body[mode="light"] {
 	height: 30px;
 }
 
+.page-container {
+	@extend .container;
+	padding-top: $toolbar-height;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
 /**
  * ------------------------------------------------------------
  * Button
@@ -162,7 +169,7 @@ a:hover:not(.button) {
 h1 {
 	font-size: 200px;
 	line-height: 200px * $line-height-factor;
-	width: max-content;
+	// width: max-content;
 }
 
 h2 {
@@ -225,6 +232,12 @@ p {
 	h3 {
 		font-size: 40px;
 		line-height: 34.5px;
+	}
+}
+
+@media screen and (max-width: $tri-column-collision) {
+	.page-container {
+		padding-top: $toolbar-height-mobile;
 	}
 }
 

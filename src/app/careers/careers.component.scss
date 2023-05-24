@@ -1,0 +1,37 @@
+@import "../../shared";
+
+.page-container {
+	text-align: center;
+}
+
+.info-img {
+	width: 60%;
+	max-width: 800px;
+}
+
+.info-text {
+	width: 600px;
+}
+
+.info-container {
+	@extend .container;
+	justify-content: space-around;
+	gap: 30px;
+}
+
+.line {
+	background-color: black;
+	height: 10px;
+	width: 70%;
+}
+
+.reasons-container {
+	@extend .container;
+	flex-wrap: wrap;
+	gap: 60px;
+}
+
+.reason {
+	width: 40%;
+	text-align: left;
+}
