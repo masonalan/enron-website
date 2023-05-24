@@ -1,7 +1,9 @@
 @import "../../shared";
 
-.page-container {
+h1,
+h2 {
 	text-align: center;
+	margin: 0;
 }
 
 .info-img {
@@ -22,16 +24,35 @@
 .line {
 	background-color: black;
 	height: 10px;
-	width: 70%;
+	width: 83%;
 }
 
 .reasons-container {
 	@extend .container;
 	flex-wrap: wrap;
-	gap: 60px;
+	gap: 30px 60px;
 }
 
 .reason {
 	width: 40%;
 	text-align: left;
+	display: flex;
+	justify-content: center;
+
+	h3 {
+		display: inline;
+		float: left;
+		line-height: 1;
+		margin-right: 12px;
+		margin-bottom: 0;
+	}
+
+	> div {
+		max-width: 600px;
+	}
+}
+
+.subtitle {
+	max-width: 700px;
+	text-align: center;
 }

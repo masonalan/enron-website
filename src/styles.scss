@@ -96,11 +96,21 @@ body[mode="light"] {
 	height: 30px;
 }
 
+.section-spacer {
+	height: 120px;
+}
+
 .page-container {
 	@extend .container;
-	padding-top: $toolbar-height;
+	padding-top: $toolbar-height + 60px;
 	padding-left: 30px;
 	padding-right: 30px;
+}
+
+@media screen and (max-width: $tri-column-collision) {
+	.page-container {
+		padding-top: $toolbar-height-mobile + 60px;
+	}
 }
 
 /**
@@ -232,12 +242,6 @@ p {
 	h3 {
 		font-size: 40px;
 		line-height: 34.5px;
-	}
-}
-
-@media screen and (max-width: $tri-column-collision) {
-	.page-container {
-		padding-top: $toolbar-height-mobile;
 	}
 }
 
