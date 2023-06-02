@@ -38,8 +38,6 @@ export class ToolbarComponent implements AfterViewInit {
 			return;
 		}
 
-		console.log("smo");
-
 		// TODO: Refactor
 		let ft = (() => {
 			if (window.pageYOffset > 1809) {

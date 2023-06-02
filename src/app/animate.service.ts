@@ -29,7 +29,6 @@ export class AnimateService {
 		this._yPrev = this._yCurr;
 		this._yCurr = yCurr;
 
-		console.log(this._isInit);
 		this._callbacks.forEach((fn) => fn());
 
 		this._isInit = true;
@@ -70,7 +69,6 @@ export class AnimateService {
 	) {
 		const set = () => {
 			elem.nativeElement.style.opacity = fadeFn(t, d);
-			console.log(elem.nativeElement);
 		};
 
 		if (!this._isInit) {

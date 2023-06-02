@@ -6,6 +6,7 @@ import {
 	ViewChild,
 	ViewChildren,
 	Renderer2,
+	AfterViewChecked,
 } from "@angular/core";
 
 import { ToolbarComponent } from "../toolbar/toolbar.component";
@@ -19,7 +20,7 @@ import { ThemeService, Theme } from "../theme.service";
 	templateUrl: "./landing.component.html",
 	styleUrls: ["./landing.component.scss"],
 })
-export class LandingComponent {
+export class LandingComponent implements AfterViewChecked {
 	yCurr = 0;
 	subtitleContent =
 		"Enron is committed to showing you<br />why we deserve a second chance.";
@@ -41,6 +42,10 @@ export class LandingComponent {
 
 	isMobile() {
 		return window.innerWidth <= 920;
+	}
+
+	ngAfterViewChecked() {
+		this.onScroll();
 	}
 
 	onScroll() {
@@ -78,11 +83,14 @@ export class LandingComponent {
 		/**
 		 * fade & scale subtitle 1
 		 */
-		const subtitle1St = scaleThresh(this.subtitle.nativeElement.offsetTop);
-		this.animate.fadeIn(this.subtitle, subtitle1St);
+		const subtitle1St = scaleThresh(
+			this.logo.nativeElement.offsetHeight +
+				this.logo.nativeElement.offsetTop
+		);
 		this.subtitle.nativeElement.style.transform = `scale(${
 			this.animate.posLinearFn(subtitle1St) * 0.5 + 0.5
 		})`;
+		console.log(subtitle1St);
 
 		/**
 		 * animate subtitle 2
@@ -115,7 +123,8 @@ export class LandingComponent {
 		this.spacer.nativeElement.style.height = `${
 			(window.innerHeight - this.tweetHeader.nativeElement.offsetHeight) /
 				2 +
-			this.tweets.height()
+			this.tweets.height() -
+			200
 		}px`;
 
 		/**
@@ -126,34 +135,13 @@ export class LandingComponent {
 		);
 
 		/**
-		 * animate tweets & toolbar
+		 * set theme
 		 */
-		// this.toolbar.handleScroll(
-		// 	this.curtain.nativeElement.offsetHeight,
-		// 	logoFt + 50
-		// );
-
 		this.theme.set(
 			window.pageYOffset > this.curtain.nativeElement.offsetHeight
 				? Theme.Light
 				: Theme.Dark
 		);
-
-		// this.renderer.setAttribute(
-		// 	document.body,
-		// 	"mode",
-		// 	window.pageYOffset > this.curtain.nativeElement.offsetHeight
-		// 		? "light"
-		// 		: "dark"
-		// );
-		// this.renderer.setAttribute(
-		// 	document.querySelector(".toolbar"),
-		// 	"mode",
-		// 	window.pageYOffset > this.curtain.nativeElement.offsetHeight
-		// 		? "light"
-		// 		: "dark"
-		// );
-		// this.tweets.handleScroll();
 
 		/**
 		 * fade out subtitle 2
